@@ -26,7 +26,7 @@ muF2_over_ref  = 1.0
 dyn_scale      = '10'    # user-defined scale -> Dominic's definition of mt+1/2*(pt^2+ptx^2)
 bwcut          = 15
 
-process_dir = "gen/test_gen"
+process_dir = "gen/ttbar_allhad_nlo"
 randomSeed  = 36
 
 # --------------------------------------------------------------
