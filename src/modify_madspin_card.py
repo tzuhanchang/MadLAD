@@ -12,7 +12,7 @@ def modify_madspin_card(process_dir: str = None, decays: str = "", bwcut: int = 
 #*                                                          *
 #************************************************************
 set max_weight_ps_point 500  # number of PS to estimate the maximum for each event
-set Nevents_for_max_weigth 500
+set Nevents_for_max_weight 500
 set BW_cut %i
 set seed %i
 define j = g u c d s b u~ c~ d~ s~ b~
