@@ -163,3 +163,4 @@ cython_debug/
 gen/
 py.py
 ME5_debug
+nsqso_born.inc
