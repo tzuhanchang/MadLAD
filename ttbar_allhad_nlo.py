@@ -7,7 +7,8 @@ import subprocess
 proc   = 'generate p p > t t~ [QCD]'
 wdecay = "decay t > w+ b, w+ > j j \ndecay t~ > w- b~, w- > j j \n"
 
-nevents = 1000
+nevents = 100000
+nevt_job= 1000
 
 beamEnergy = 6500
 
@@ -88,6 +89,7 @@ run_card_extras = { 'lhaid'         : lhaid,
                     'ptj'       : '0.1', # minimum jet pT
                     'req_acc'   : '0.001',
                     'nevents'   : nevents,
+                    'nevt_job'  : nevt_job,
                     'iseed'     : randomSeed,
                     'beamenergy': beamEnergy
                     }
