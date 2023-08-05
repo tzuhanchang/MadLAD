@@ -1,5 +1,4 @@
-from src import modify_run_card, modify_scales, modify_madspin_card
-import fileinput
+from src import modify_run_card, modify_madspin_card
 import shutil
 import subprocess
 
