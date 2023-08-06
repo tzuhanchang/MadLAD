@@ -1,4 +1,6 @@
-def modify_madspin_card(process_dir: str = None, decays: str = "", bwcut: int = None, randomSeed: int = None):
+def modify_madspin_card(process_dir: str = None, decays: str = "", bwcut: int = 15, 
+                        max_weight_ps_point: int = 500, Nevents_for_max_weight: int = 500,
+                        randomSeed: int = 1):
     madspin_card_loc=process_dir+'/Cards/madspin_card.dat'
     mscard = open(madspin_card_loc,'w')
     mscard.write("""#************************************************************
@@ -11,12 +13,11 @@ def modify_madspin_card(process_dir: str = None, decays: str = "", bwcut: int = 
 #*    https://server06.fynu.ucl.ac.be/projects/madgraph     *
 #*                                                          *
 #************************************************************
-set max_weight_ps_point 500  # number of PS to estimate the maximum for each event
-set Nevents_for_max_weight 500
+set max_weight_ps_point %i  # number of PS to estimate the maximum for each event
+set Nevents_for_max_weight %i
 set BW_cut %i
 set seed %i
-define j = g u c d s b u~ c~ d~ s~ b~
 %s
 launch
-"""%(bwcut, randomSeed, decays))
+"""%(max_weight_ps_point, Nevents_for_max_weight, bwcut, randomSeed, decays))
     mscard.close()
