@@ -1,11 +1,10 @@
-from src import modify_run_card, modify_scales, modify_madspin_card
-import fileinput
+from src import modify_run_card, modify_scales, modify_madspin_card, get_pdfset
 import shutil
 import subprocess
 
 # ttbar with all hadronic decays in next-to-leading order QCD.
 proc   = 'generate p p > t t~ [QCD]'
-wdecay = "decay t > w+ b, w+ > j j \ndecay t~ > w- b~, w- > j j \n"
+wdecay = "define j = g u c d s b u~ c~ d~ s~ b~ \ndecay t > w+ b, w+ > j j \ndecay t~ > w- b~, w- > j j \n"
 
 nevents = 100000
 nevt_job= 1000
@@ -29,6 +28,12 @@ bwcut          = 15
 
 process_dir = "gen/ttbar_allhad_nlo"
 randomSeed  = 36
+
+
+# Download PDF set
+# !!! Only enable this option when using Docker, 
+#     please comment it out outside the Docker container
+get_pdfset(lhaid)
 
 # --------------------------------------------------------------
 #  Proc card writing
@@ -66,6 +71,8 @@ modify_madspin_card(
     process_dir=process_dir,
     decays=wdecay,
     bwcut=bwcut,
+    max_weight_ps_point=500,
+    Nevents_for_max_weight=500,
     randomSeed=randomSeed
 )
 
