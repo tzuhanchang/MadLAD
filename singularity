@@ -1,0 +1,7 @@
+Bootstrap: docker
+From: tzuhanchang/madlad:amd64
+
+%post
+  cd /usr/local/share/LHAPDF
+  wget http://lhapdfsets.web.cern.ch/lhapdfsets/current/NNPDF30_nlo_as_0118.tar.gz && tar -zxf NNPDF30_nlo_as_0118.tar.gz
+  wget http://lhapdfsets.web.cern.ch/lhapdfsets/current/NNPDF30_nlo_as_0118_nf_4.tar.gz && tar -zxf NNPDF30_nlo_as_0118_nf_4.tar.gz
