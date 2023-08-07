@@ -31,9 +31,9 @@ randomSeed  = 36
 
 
 # Download PDF set
-# !!! Only enable this option when using Docker, 
+# !!! Only enable this option when using Docker,
 #     please comment it out outside the Docker container
-get_pdfset(lhaid)
+# get_pdfset(lhaid)
 
 # --------------------------------------------------------------
 #  Proc card writing
