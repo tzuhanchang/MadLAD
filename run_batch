@@ -1,0 +1,30 @@
+#!/bin/bash
+
+cd /mnt
+
+python3 ttbar_allhad_nlo.py
+
+export PROC_NAME=ttbar_allhad_nlo
+export MG5_RUN_DIR=gen/$PROC_NAME
+export MG5_OUT_DIR=${ClusterId}.${ProcId}.output
+export MG5_LOG_DIR=${ClusterId}.${ProcId}.logs
+
+mkdir -p $MG5_OUT_DIR
+mkdir -p $MG5_LOG_DIR
+
+echo -e "launch $MG5_RUN_DIR" > mg5_exec_card
+
+for run_num in {01..11}
+do
+  mg5 mg5_exec_card
+
+  gunzip $MG5_RUN_DIR/Events/run_${run_num}_decayed_1/events_PYTHIA8_0.hepmc.gz
+  DelphesHepMC2 delphes/ATLAS_sim_FASTJET.tcl $MG5_OUT_DIR/$PROC_NAME-${run_num}-raw.root $MG5_RUN_DIR/Events/run_${run_num}_decayed_1/events_PYTHIA8_0.hepmc
+  rm -f $MG5_RUN_DIR/Events/run_${run_num}_decayed_1/events_PYTHIA8_0.hepmc
+
+  root -q "JetTruthMatching.C(\"$MG5_OUT_DIR/$PROC_NAME-${run_num}-raw.root\",\"$MG5_OUT_DIR/$PROC_NAME-${run_num}.root\")"
+  rm -f $MG5_OUT_DIR/$PROC_NAME-${run_num}-raw.root
+
+done
+
+rm mg5_exec_card
