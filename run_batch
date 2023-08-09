@@ -7,10 +7,8 @@ python3 ttbar_allhad_nlo.py
 export PROC_NAME=ttbar_allhad_nlo
 export MG5_RUN_DIR=gen/$PROC_NAME
 export MG5_OUT_DIR=${ClusterId}.${ProcId}.output
-export MG5_LOG_DIR=${ClusterId}.${ProcId}.logs
 
 mkdir -p $MG5_OUT_DIR
-mkdir -p $MG5_LOG_DIR
 
 echo -e "launch $MG5_RUN_DIR" > mg5_exec_card
 
@@ -26,5 +24,8 @@ do
   rm -f $MG5_OUT_DIR/$PROC_NAME-${run_num}-raw.root
 
 done
+
+source /usr/local/bin/thisroot.sh
+hadd $PROC_NAME-${ClusterId}-${ProcId}.root $MG5_OUT_DIR/*
 
 rm mg5_exec_card

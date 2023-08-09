@@ -9,6 +9,6 @@ environment             = "ClusterId=$(ClusterId) ProcId=$(ProcId)"
 should_transfer_files   = YES
 transfer_input_files    = delphes, src, param, madlad.sif, ttbar_allhad_nlo.py, JetTruthMatching.C, run_batch
 when_to_transfer_output = ON_EXIT
-transfer_output_files   = $(ClusterId).$(ProcId).output, $(ClusterId).$(ProcId).logs
+transfer_output_files   = ttbar_allhad_nlo-$(ClusterId)-$(ProcId).root, $(ClusterId).$(ProcId).logs
 request_CPUs = 4
 queue 50
