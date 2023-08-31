@@ -1,11 +1,18 @@
 import warnings
 
+from madlad.utils import config
+from typing import Optional
 
-def modify_run_card(process_dir: str = None, settings: dict = {}):
-    """Build a new run_card.dat from an existing one.
-    This function can get a fresh runcard from DATAPATH or start from the process directory.
-    Settings is a dictionary of keys (no spaces needed) and values to replace.
+
+def edit_run(settings: Optional[config] = None):
+    """Edit `run_card.dat` under the MadGraph process path :obj:`process_dir`.
+    
+    Args:
+        process_dir (optional: str): aMC process directory.
+        settings (optional: madlad.utils.config): settings.
     """
+    save_dir = settings.process_dir
+    settings = settings.run
 
     # Operate on lower case settings, and choose the capitalization MG5 has as the default (or all lower case)
     for s in list(settings.keys()):
@@ -25,8 +32,8 @@ def modify_run_card(process_dir: str = None, settings: dict = {}):
     if 'nevents' in settings:
         settings['nevents'] = int(settings['nevents'])
 
-    defaultCard = open(process_dir+"/Cards/run_card_default.dat", 'r')
-    newCard = open(process_dir+'/Cards/run_card.dat', 'w')
+    defaultCard = open(save_dir+"/Cards/run_card_default.dat", 'r')
+    newCard = open(save_dir+'/Cards/run_card.dat', 'w')
     used_settings = []
     for line in iter(defaultCard):
         if not line.strip().startswith('#'): # line commented out

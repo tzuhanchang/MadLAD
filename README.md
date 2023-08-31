@@ -8,14 +8,8 @@ This code is based on the generator component of [ATLAS Athena](https://gitlab.c
 ### Quick Start
 Use a build-in process initiate a MadGraph process:
 ```
-python3 ttbar_allhad_nlo.py
+python3 Generate.py -c processes/ttbar_allhad_nlo.json
 ```
-It creates a folder `gen/ttbar_allhad_nlo`, and modifies MadGraph cards using user defined parameters. After the process is initiated, user can start generating events by running
-```
-mg5_aMC gen/ttbar_allhad_nlo
-```
-This requires `mg5_aMC` is in your `$PATH`.
-
 ---
 
 ### Docker

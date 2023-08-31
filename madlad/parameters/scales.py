@@ -1,7 +1,23 @@
 import fileinput
 
-def modify_scales(process_dir: str = None, custom_scales: str = ""):
-    fileN = process_dir+'/SubProcesses/setscales.f'
+from madlad.utils import config
+from typing import Optional
+
+
+def edit_scales(settings: Optional[config] = None):
+    r"""Use a custom dynmaical scale by editing `setscales.f` under :obj:`process_dir`/SubProcesses.
+
+    Args:
+        process_dir (optional: str): aMC process directory.
+        settings (optional: madlad.utils.config): settings.
+    """
+    save_dir = settings.process_dir
+    settings = settings.scales
+
+    if 'custom_scales' not in list(settings.keys()):
+        raise ValueError("Cannot find `custom_scales`, please provide it in config.")
+    
+    fileN = save_dir+'/SubProcesses/setscales.f'
     mark  = '      elseif(dynamical_scale_choice.eq.10) then'
     rmLines = ['ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc',
             'cc      USER-DEFINED SCALE: ENTER YOUR CODE HERE                                 cc',
@@ -24,4 +40,4 @@ def modify_scales(process_dir: str = None, custom_scales: str = ""):
         if toKeep:
             print(line, end="")  # Use end="" to prevent adding a newline
         if line.startswith(mark):
-            print(custom_scales)
+            print(settings['custom_scales'])

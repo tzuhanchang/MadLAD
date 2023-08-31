@@ -1,0 +1,47 @@
+[
+    {
+        "model": "loop_sm-no_b_mass",
+        "multiparticle": "define p = g u c d s u~ c~ d~ s~ b b~\n define j = g u c d s u~ c~ d~ s~ b b~\n",
+        "proc": "generate p p > t t~ [QCD]",
+        "save_dir": "gen/ttbar_allhad_nlo"
+    },
+
+    {
+        "nevents": 100000,
+        "nevt_job": 1000,
+        "iseed": 0,
+        "beamenergy": 6500,
+        "pdlabel": "'lhapdf'",
+        "lhaid": 260000,
+        "parton_shower": "PYTHIA8",
+        "maxjetflavor": 5,
+        "reweight_scale": ".true.",
+        "reweight_PDF": ".true.",
+        "PDF_set_min": 260001,
+        "PDF_set_max": 260100,
+        "muR_over_ref": 1.0,
+        "muF1_over_ref": 1.0,
+        "muF2_over_ref": 1.0,
+        "dynamical_scale_choice": "10",
+        "jetalgo": "-1",
+        "jetradius": "0.4",
+        "ptj": "0.1",
+        "req_acc": "0.001"
+    },
+
+    {
+        "multiparticle": "define p = g u c d s u~ c~ d~ s~ b b~ \ndefine j = g u c d s u~ c~ d~ s~ b b~\n",
+        "decays": "decay t > w+ b, w+ > j j \ndecay t~ > w- b~, w- > j j \n",
+        "bwcut": 15,
+        "max_weight_ps_point": 500,
+        "Nevents_for_max_weight": 500
+    },
+    
+    {
+        "param": "aMcAtNlo_param_card_loop_sm-no_b_mass.dat"
+    },
+
+    {
+        "custom_scales": "c         Q^2= mt^2 + 0.5*(pt^2+ptbar^2)\n          xm2=dot(pp(0,3),pp(0,3))\n          tmp=sqrt(xm2+0.5*(pt(pp(0,3))**2+pt(pp(0,4))**2))\n          temp_scale_id='mt**2 + 0.5*(pt**2+ptbar**2)'\n              "
+    }
+]
