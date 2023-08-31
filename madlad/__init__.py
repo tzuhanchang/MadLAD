@@ -30,7 +30,7 @@ class LazyLoader(ModuleType):
 parameters = LazyLoader('data', globals(), 'madlad.parameters')
 utils = LazyLoader('graphs', globals(), 'madlad.utils')
 
-__version__ = 'alpha0.1'
+__version__ = 'v2'
 
 
 __all__ = [
