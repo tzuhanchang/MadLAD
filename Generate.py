@@ -3,7 +3,7 @@ import subprocess
 
 from madlad.parameters import edit_madspin, edit_run, edit_scales, copy_param_card, make_process
 
-from madlad.utils import config
+from madlad.utils import config, get_model, get_pdfset, is_running_in_docker_container
 
 
 def argparser():
@@ -23,11 +23,15 @@ if __name__ == '__main__':
     settings = config(args.config)
 
     if hasattr(settings,'model'):
+        if is_running_in_docker_container():
+            get_model(settings.model['model'])
         make_process(settings=settings,madgraph_path=str(args.mg5))
     else:
         raise ValueError("No process provided")
 
     if hasattr(settings,'run'):
+        if is_running_in_docker_container():
+            get_pdfset(settings.run['lhaid'])
         edit_run(settings=settings)
 
     if hasattr(settings,'param'):
