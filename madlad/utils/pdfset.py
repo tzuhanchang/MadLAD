@@ -4,7 +4,7 @@ import subprocess
 
 def get_pdfset(pdf_id: int, pdfsets_dict: str = "/usr/local/share/LHAPDF"):
     pdf_name = ""
-    with open(pdfsets_dict+"/pdfsets.index", "r") as f:
+    with open(os.path.join(pdfsets_dict,"pdfsets.index"), "r") as f:
         lines=f.readlines()
         for line in lines:
             info = line.split(' ')
