@@ -4,8 +4,14 @@ def is_running_in_docker_container():
             for line in f:
                 if 'docker' in line or 'lxc' in line:
                     return True
-            confirmation = input("Docker container environment is not detected. You are not recommended to use auto model/PDF download.\nAre you sure you want to continue? (y/n): ")
-            return confirmation.lower() == 'y'
+            confirmation = input("MadLAD is designed to be used inside a containerised environment. You are NOT recommended to continue if you are not in one.\nAre you sure you want to continue? (y/n): ")
+            if confirmation.lower() == 'y':
+                return True
+            else:
+                raise RuntimeError("User chooses not to continue.")
     except FileNotFoundError:
-        confirmation = input("Docker container environment is not detected. You are not recommended to use auto model/PDF download.\nAre you sure you want to continue? (y/n): ")
-        return confirmation.lower() == 'y'
+        confirmation = input("MadLAD is designed to be used inside a containerised environment. You are NOT recommended to continue if you are not in one.\nAre you sure you want to continue? (y/n): ")
+        if confirmation.lower() == 'y':
+            return True
+        else:
+            raise RuntimeError("User chooses not to continue.")
