@@ -159,8 +159,10 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-# Generation files
+# Generator files
 gen/
 py.py
 ME5_debug
+MG5_debug
+mg5_exec_card
 nsqso_born.inc
