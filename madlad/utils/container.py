@@ -14,7 +14,7 @@ def is_running_in_docker_container():
 
 def is_running_in_singularity_container():
     try:
-        if os.environ['SINGULARITY_NAME'] is not "":
+        if os.environ['SINGULARITY_NAME'] != "":
             return True
         else:
             return False

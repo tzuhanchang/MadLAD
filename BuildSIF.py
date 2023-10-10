@@ -16,7 +16,7 @@ if __name__ == '__main__':
 
     settings = config(args.config)
 
-    if which("singularity") is not None:
+    if which("singularity") != "":
         build_sif(settings.run['lhaid'],settings.model['model'])
     else:
         raise RuntimeError("Singularity is not detected on your system.")

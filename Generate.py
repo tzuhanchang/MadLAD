@@ -1,8 +1,6 @@
 import argparse
 import subprocess
 
-from shutil import which
-
 from madlad.parameters import edit_madspin, edit_run, edit_scales, copy_param_card, make_process
 
 from madlad.utils import config, get_model, get_pdfset, is_running_in_docker_container, is_running_in_singularity_container
@@ -40,7 +38,7 @@ if __name__ == '__main__':
         use_singularity = True
 
     if in_container is False and use_singularity is False:
-        raise RuntimeError("MadLAD is designed to be used inside a containerised environment. You MUST use either Docker or Singularity")
+        raise RuntimeError("MadLAD is designed to be used inside a containerised environment. You MUST use either Docker or Singularity.")
 
 
     if args.launch_from is not None:
