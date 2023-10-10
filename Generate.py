@@ -1,9 +1,11 @@
 import argparse
 import subprocess
 
+from shutil import which
+
 from madlad.parameters import edit_madspin, edit_run, edit_scales, copy_param_card, make_process
 
-from madlad.utils import config, get_model, get_pdfset, is_running_in_docker_container
+from madlad.utils import config, get_model, get_pdfset, is_running_in_docker_container, build_sif
 
 
 def argparser():
@@ -26,10 +28,29 @@ if __name__ == '__main__':
 
     settings = config(args.config)
 
-    if args.assume_yes:
+    in_container = False
+    use_singularity = False
+
+    if is_running_in_docker_container():
         in_container = True
-    else:
-        in_container = is_running_in_docker_container()
+        use_singularity = False
+    
+    if which("singularity") is not None:
+        in_container = False
+        if args.assume_yes:
+            build_sif(settings.run['lhaid'],settings.model['model'])
+            use_singularity = True
+        else:
+            confirmation_sif = input("Singularity is detected on your system. Do you want to build a SIF image to run MadLAD? (y/n): ")
+            if confirmation_sif.lower() == 'y':
+                build_sif(settings.run['lhaid'],settings.model['model'])
+                use_singularity = True
+            else:
+                raise RuntimeError("User chooses not to continue.")
+
+    if in_container is False and use_singularity is False:
+        raise RuntimeError("MadLAD is designed to be used inside a containerised environment. You MUST use either Docker or Singularity")
+
 
     if args.launch_from is not None:
         if in_container:
