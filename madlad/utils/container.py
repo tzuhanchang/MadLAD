@@ -4,6 +4,8 @@ def is_running_in_docker_container():
             for line in f:
                 if 'docker' in line or 'lxc' in line:
                     return True
-        return False
+            confirmation = input("Docker container environment is not detected. You are not recommended to use auto model/PDF download.\nAre you sure you want to continue? (y/n): ")
+            return confirmation.lower() == 'y'
     except FileNotFoundError:
-        return False
+        confirmation = input("Docker container environment is not detected. You are not recommended to use auto model/PDF download.\nAre you sure you want to continue? (y/n): ")
+        return confirmation.lower() == 'y'
