@@ -16,8 +16,6 @@ def argparser():
                         help='Launch the generation from a saved production (default: None).')
     parser.add_argument('--auto_launch', action=argparse.BooleanOptionalAction,
                         help='Launch the generation after processing (default: False).')
-    parser.add_argument('-y', '--assume_yes', action=argparse.BooleanOptionalAction,
-                        help='Assume yes if prompted. (NOT recommended) (default: False)')
     return parser.parse_args()
 
 
