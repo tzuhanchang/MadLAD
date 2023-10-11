@@ -1,24 +1,21 @@
-import os
+import json
 import subprocess
-from madlad.utils import is_running_in_docker_container
+
+from glob import glob
+from typing import Optional
 
 
-def get_model(model_name: str, model_dict: str = "/app/MG5_aMC_v2_9_16/models"):
-    if is_running_in_docker_container():
-        pass
-    else:
-        raise ValueError("`get_model` is not designed to run outside a container!")
-    
-    get_list = subprocess.Popen(["wget","http://madgraph.phys.ucl.ac.be/models_db.dat"])
-    get_list.wait()
+def get_model(model_name: str, model_dict: Optional[str] = "/app/MG5_aMC_*/models"):
+    r"""Download and install MG5 model defined in process file.
 
-    lookup_dict = {}
-    with open('models_db.dat', 'r') as file:
-        for line in file:
-            columns = line.strip().split()
-            if len(columns) == 2:
-                name, content = columns[0], columns[1]
-                lookup_dict[name] = content
+    Args:
+        model_name (str): model name.
+        model_dict (str, optional): MG5 path. (default: :obj:`str`='/app/MG5_aMC_v2_9_16/models')
+    """
+    model_dict = glob(model_dict)[0]
+
+    with open("madlad/db/models_db.json", "r") as f:
+        lookup_dict = json.load(f)
 
     link = ""
     for key in list(lookup_dict.keys()):
@@ -30,21 +27,53 @@ def get_model(model_name: str, model_dict: str = "/app/MG5_aMC_v2_9_16/models"):
             fname = key
 
     if link == "":
-        raise ValueError("Model not found in the database.")
+        raise ValueError("Model not found in the LHAPDF database. If you think this is an error, please report to https://github.com/tzuhanchang/MadLAD.git.")
 
-    delete_list = subprocess.Popen(["rm","models_db.dat"])
-    delete_list.wait()
+    download = subprocess.Popen(["sudo","wget","-P",model_dict+"/",link])
+    download.wait()
+    unzip    = subprocess.Popen(["sudo","unzip",model_dict+"/%s.zip"%(fname),"-d",model_dict])
+    unzip.wait()
 
-    if os.path.exists(model_dict+"/{}".format(fname)) != True:
-        download = subprocess.Popen(["sudo","wget","-P",model_dict+"/",link])
-        download.wait()
-        unzip    = subprocess.Popen(["sudo","unzip",model_dict+"/{}.zip".format(fname),"-d",model_dict])
-        unzip.wait()
-        testcard = open('tmp.dat','w')
-        testcard.write("""convert model %s/%s
+    testcard = open('/tmp/convert.dat','w')
+    testcard.write("""convert model %s/%s
 """%(model_dict,fname))
-        testcard.close()
-        convert = subprocess.Popen(["sudo", "/usr/local/bin/mg5", "tmp.dat"])
-        convert.wait()
-        cleanup = subprocess.Popen(["rm", "tmp.dat"])
-        cleanup.wait()
+    testcard.close()
+    convert = subprocess.Popen(["sudo", "/usr/local/bin/mg5", "/tmp/convert.dat"])
+    convert.wait()
+    cleanup = subprocess.Popen(["rm", "/tmp/convert.dat"])
+    cleanup.wait()
+
+
+def get_model_singularity(model_name: str, model_dict: str = "/app/MG5_aMC_v2_9_16/models") -> str:
+    r"""Download and install MG5 model defined in process file to build singularity image.
+
+    Args:
+        model_name (str): model name.
+        model_dict (str, optional): MG5 path. (default: :obj:`str`='/app/MG5_aMC_v2_9_16/models')
+    """
+    with open("madlad/db/models_db.json", "r") as f:
+        lookup_dict = json.load(f)
+
+    link = ""
+    for key in list(lookup_dict.keys()):
+        if model_name in key or key in model_name:
+            link = lookup_dict[key]
+            fname = key
+        if model_name == key:
+            link = lookup_dict[key]
+            fname = key
+
+    if link == "":
+        raise ValueError("Model not found in the LHAPDF database. If you think this is an error, please report to https://github.com/tzuhanchang/MadLAD.git.")
+    
+    to_write = """
+    cd %s
+    wget %s
+    unzip %s.zip
+    cd /tmp
+    echo -e "convert model %s/%s" > convert.dat
+    /usr/local/bin/mg5 convert.dat
+    rm convert.dat
+    """%(model_dict, link, fname, model_dict, fname)
+
+    return to_write
