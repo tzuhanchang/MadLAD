@@ -40,6 +40,6 @@ def get_pdfset_singularity(pdf_id: int, pdfsets_dict: Optional[str] = "/usr/loca
 
     to_write = """
     cd %s
-    wget %s && tar -zxf %s.tar.gz"""%(pdfsets_dict, pdf_name, pdf_name)
+    wget http://lhapdfsets.web.cern.ch/lhapdfsets/current/%s.tar.gz && tar -zxf %s.tar.gz"""%(pdfsets_dict, pdf_name, pdf_name)
 
     return to_write
