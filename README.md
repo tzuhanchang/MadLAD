@@ -20,12 +20,12 @@ If you are using LXPLUS, or machines with Singularity enabled, run
 ```
 python3 BuildSIF.py -c processes/ttbar_allhad_nlo.json
 ```
-before running generation.
+to build a Singularity image called ```madlad.sif```.
 
 ---
 
 ### Generate
-If you want to generate processes defined in one of the presets, make sure you are inside the container and run
+If you want to generate processes defined in one of the presets, make sure you are inside the container (make sure your MadLAD directory is mounted on `/mnt` of the container), and run
 ```
 python3 Generate.py -c processes/ttbar_allhad_nlo.json
 ```
