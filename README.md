@@ -1,24 +1,32 @@
-### MadLAD: an aMC@NLO assistant
+<p align="center">
+  <img height="150" src=".github/logo/madlad_logo.png"/>
+</p>
 
-This code is based on the generator component of [ATLAS Athena](https://gitlab.cern.ch/atlas/athena) for performing external truth-level studies using ATLAS suggested MC modellings.
+--------------------------------------------------------------------------------
+
+**MadLAD** is a event generation wrapper built upon [MadGraph5](https://launchpad.net/mg5amcnlo), [Pythia8](https://pythia.org) and [Delphes](https://github.com/delphes/delphes). MadLAD is designed to be used with Docker or Singularity containers, which contain all necessary software and environment setups.
+
+MadLAD is currently a personal project, contributions to this project are warmly welcomed. If you are interested in contributing, please submit a pull request with your implemented new features or fixed bugs.
 
 - [Quick Start](#quick-start)
-- [Docker](#docker)
+- [Generate](#generate)
 
 ### Quick Start
-Use a build-in process initiate a MadGraph process:
+Get the MadLAD container from Docker:
+```
+docker pull tzuhanchang/madlad:amd64
+```
+If you are using LXPLUS, or machines with Singularity enabled, run
+```
+python3 BuildSIF.py -c processes/ttbar_allhad_nlo.json
+```
+to build a Singularity image called ```madlad.sif```.
+
+---
+
+### Generate
+If you want to generate processes defined in one of the presets, make sure you are inside the container (make sure your MadLAD directory is mounted on `/mnt` of the container), and run
 ```
 python3 Generate.py -c processes/ttbar_allhad_nlo.json
 ```
----
-
-### Docker
-We understand, setting up environment is tricky, specially if you are using a Mac. So we included a `Dockerfile`, just build it and you can start generating events. Building the docker file following
-```
-docker build ./ -t "madlad:v1"
-``` 
-Start a docker container run
-```
-docker run -it --rm -v /Users/jo/MCs:/mnt madlad:v1 /bin/bash
-```
-This mounts your directory `/Users/jo/MCs` to the `data` folder inside the container.
+This will only produce a production directory, if you want to automatically launch the Matrix Element (ME) or Parton Shower (PS) simulation, use the option ```--auto_launch```. You can also define your own processes and save them to ```.json``` files.
