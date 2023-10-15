@@ -1,8 +1,13 @@
 [
     {
         "model": "HC_NLO_X0_UFO-4Fnoyb",
-        "multiparticle": "define p = g u c d s u~ c~ d~ s~\n define j = g u c d s u~ c~ d~ s~\n define t1 = t t~\n define b1 = b b~\n",
-        "proc": "generate p p > x0 t1 b1 j $$ w+ w- [QCD]",
+        "multiparticle": [
+            "p = g u c d s u~ c~ d~ s~",
+            "j = g u c d s u~ c~ d~ s~",
+            "t1 = t t~",
+            "b1 = b b~"
+        ],
+        "proc": "p p > x0 t1 b1 j $$ w+ w- [QCD]",
         "save_dir": "gen/tHjb_CP_nlo"
     },
 
@@ -27,8 +32,14 @@
     },
 
     {
-        "multiparticle": "define p = g u c d s u~ c~ d~ s~ \ndefine j = g u c d s u~ c~ d~ s~\n",
-        "decays": "decay t > w+ b, w+ > all all \ndecay t~ > w- b~, w- > all all \n",
+        "multiparticle": [
+            "p = g u c d s u~ c~ d~ s~",
+            "j = g u c d s u~ c~ d~ s~"
+        ],
+        "decays": [
+            "t > w+ b, w+ > all all",
+            "t~ > w- b~, w- > all all"
+        ],
         "max_weight_ps_point": 500,
         "Nevents_for_max_weight": 2000
     },

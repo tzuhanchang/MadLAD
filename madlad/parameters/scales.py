@@ -40,4 +40,5 @@ def edit_scales(settings: Optional[config] = None):
         if toKeep:
             print(line, end="")  # Use end="" to prevent adding a newline
         if line.startswith(mark):
-            print(settings['custom_scales'])
+            for scales in settings['custom_scales']:
+                print(scales)
