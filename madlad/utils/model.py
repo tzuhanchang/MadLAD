@@ -27,7 +27,7 @@ def get_model(model_name: str, model_dict: Optional[str] = "/app/MG5_aMC_*/model
             fname = key
 
     if link == "":
-        raise ValueError("Model not found in the LHAPDF database. If you think this is an error, please report to https://github.com/tzuhanchang/MadLAD.git.")
+        raise ValueError("Model not found in the MadGraph database. If you think this is an error, please report to https://github.com/tzuhanchang/MadLAD.git.")
 
     download = subprocess.Popen(["sudo","wget","-P",model_dict+"/",link])
     download.wait()
@@ -62,9 +62,11 @@ def get_model_singularity(model_name: str, model_dict: str = "/app/MG5_aMC_v2_9_
         if model_name == key:
             link = lookup_dict[key]
             fname = key
+        if "MSSM_SLHA2" in model_name or "loop_sm" in model_name or "taudecay_UFO" in model_name or "sm" in model_name:
+            return ""
 
     if link == "":
-        raise ValueError("Model not found in the LHAPDF database. If you think this is an error, please report to https://github.com/tzuhanchang/MadLAD.git.")
+        raise ValueError("Model not found in the MadGraph database. If you think this is an error, please report to https://github.com/tzuhanchang/MadLAD.git.")
     
     to_write = """
     cd %s

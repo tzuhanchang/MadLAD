@@ -1,8 +1,11 @@
 [
     {
         "model": "loop_sm-no_b_mass",
-        "multiparticle": "define p = g u c d s u~ c~ d~ s~ b b~\n define j = g u c d s u~ c~ d~ s~ b b~\n",
-        "proc": "generate p p > t t~ [QCD]",
+        "multiparticle": [
+            "p = g u c d s u~ c~ d~ s~ b b~",
+            "j = g u c d s u~ c~ d~ s~ b b~"
+        ],
+        "proc": "p p > t t~ [QCD]",
         "save_dir": "gen/ttbar_allhad_nlo"
     },
 
@@ -30,8 +33,14 @@
     },
 
     {
-        "multiparticle": "define p = g u c d s u~ c~ d~ s~ b b~ \ndefine j = g u c d s u~ c~ d~ s~ b b~\n",
-        "decays": "decay t > w+ b, w+ > j j \ndecay t~ > w- b~, w- > j j \n",
+        "multiparticle": [
+            "p = g u c d s u~ c~ d~ s~ b b~",
+            "j = g u c d s u~ c~ d~ s~ b b~"
+        ],
+        "decays": [
+            "t > w+ b, w+ > j j",
+            "t~ > w- b~, w- > j j"
+        ],
         "bwcut": 15,
         "max_weight_ps_point": 500,
         "Nevents_for_max_weight": 500
@@ -42,6 +51,12 @@
     },
 
     {
-        "custom_scales": "c         Q^2= mt^2 + 0.5*(pt^2+ptbar^2)\n          xm2=dot(pp(0,3),pp(0,3))\n          tmp=sqrt(xm2+0.5*(pt(pp(0,3))**2+pt(pp(0,4))**2))\n          temp_scale_id='mt**2 + 0.5*(pt**2+ptbar**2)'\n              "
+        "custom_scales": [
+            "c         Q^2= mt^2 + 0.5*(pt^2+ptbar^2)",
+            "          xm2=dot(pp(0,3),pp(0,3))",
+            "          tmp=sqrt(xm2+0.5*(pt(pp(0,3))**2+pt(pp(0,4))**2))",
+            "          temp_scale_id='mt**2 + 0.5*(pt**2+ptbar**2)'",
+            "              "
+        ]
     }
 ]
