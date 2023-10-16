@@ -3,7 +3,7 @@ import subprocess
 from madlad.utils import get_pdfset_singularity, get_model_singularity
 
 
-def create_singularity_build(pdf_id: int, model_name: str):
+def create_singularity_build(pdf_id: int, model_name: str, repo: str):
     r"""Create a Singularity build file.
     
     Args:
@@ -12,19 +12,19 @@ def create_singularity_build(pdf_id: int, model_name: str):
     """
     with open("singularity", "w") as f:
         f.write("""Bootstrap: docker
-From: tzuhanchang/madlad:amd64
+From: %s
 
-%post"""+get_pdfset_singularity(pdf_id)+get_model_singularity(model_name))
+%post"""%(repo)+get_pdfset_singularity(pdf_id)+get_model_singularity(model_name))
 
 
-def build_sif(pdf_id: int, model_name: str):
+def build_sif(pdf_id: int, model_name: str, repo: str = "tzuhanchang/madlad:amd64"):
     r"""Build a Singularity SIF file.
 
     Args:
         pdf_id (int): LHAPDF ID.
         model_name (str): model name.
     """
-    create_singularity_build(pdf_id=pdf_id, model_name=model_name)
+    create_singularity_build(pdf_id=pdf_id, model_name=model_name, repo=repo)
 
     build = subprocess.Popen(["singularity", "build", "--fakeroot", "madlad.sif", "singularity"])
     build.wait()
