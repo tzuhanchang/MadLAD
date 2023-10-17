@@ -25,6 +25,8 @@ def get_model(model_name: str, model_dict: Optional[str] = "/app/MG5_aMC_*/model
         if model_name == key:
             link = lookup_dict[key]
             fname = key
+        if "MSSM_SLHA2" in model_name or "loop_sm" in model_name or "taudecay_UFO" in model_name or "sm" in model_name:
+            return ""
 
     if link == "":
         raise ValueError("Model not found in the MadGraph database. If you think this is an error, please report to https://github.com/tzuhanchang/MadLAD.git.")
