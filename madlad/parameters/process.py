@@ -1,3 +1,4 @@
+import os
 import subprocess
 
 from madlad.utils import config
@@ -6,7 +7,7 @@ from typing import Optional
 
 def make_process(settings: Optional[config] = None, madgraph_path: Optional[str] = None):
     """Make the process defined in :obj:`settings` and save to :obj:`process_dir`.
-    
+
     Args:
         settings (optional: madlad.utils.config): settings.
     """
@@ -31,7 +32,7 @@ def make_process(settings: Optional[config] = None, madgraph_path: Optional[str]
         multiparticle = ""
 
 
-    fcard = open('proc_card_mg5.dat','w')
+    fcard = open(f"proc_card_mg5-{os.path.basename(save_dir)}.dat",'w')
     fcard.write("""%s
 %s
 %s
@@ -42,10 +43,10 @@ def make_process(settings: Optional[config] = None, madgraph_path: Optional[str]
     proc,
     "output "+save_dir
     ) )
-    
+
     fcard.close()
 
-    gen = subprocess.Popen([madgraph_path, "proc_card_mg5.dat"])
+    gen = subprocess.Popen([madgraph_path, f"proc_card_mg5-{os.path.basename(save_dir)}.dat"])
     gen.wait()
 
-    subprocess.Popen(["rm", "proc_card_mg5.dat"])
+    subprocess.Popen(["rm", f"proc_card_mg5-{os.path.basename(save_dir)}.dat"])
