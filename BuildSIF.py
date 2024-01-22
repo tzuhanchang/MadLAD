@@ -11,6 +11,8 @@ def argparser():
     parser.add_argument('-r', '--repo',   type=str,  required=False,
                         default="tzuhanchang/madlad:amd64",
                         help='The base Docker image repository.')
+    parser.add_argument('--remote', action=argparse.BooleanOptionalAction,
+                        help='Use remote Singularity builder (default: False).')
     return parser.parse_args()
 
 
@@ -20,6 +22,6 @@ if __name__ == '__main__':
     settings = config(args.config)
 
     if which("singularity") != "":
-        build_sif(settings.run['lhaid'],settings.model['model'],args.repo)
+        build_sif(settings.run['lhaid'],settings.model['model'],args.repo,args.remote)
     else:
         raise RuntimeError("Singularity is not detected on your system.")

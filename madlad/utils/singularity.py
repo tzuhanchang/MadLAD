@@ -17,7 +17,7 @@ From: """+repo+"""
 %post"""+get_pdfset_singularity(pdf_id)+get_model_singularity(model_name))
 
 
-def build_sif(pdf_id: int, model_name: str, repo: str = "tzuhanchang/madlad:amd64"):
+def build_sif(pdf_id: int, model_name: str, repo: str = "tzuhanchang/madlad:amd64", remote: bool = False):
     r"""Build a Singularity SIF file.
 
     Args:
@@ -26,5 +26,7 @@ def build_sif(pdf_id: int, model_name: str, repo: str = "tzuhanchang/madlad:amd6
     """
     create_singularity_build(pdf_id=pdf_id, model_name=model_name, repo=repo)
 
-    build = subprocess.Popen(["singularity", "build", "--fakeroot", "madlad.sif", "singularity"])
+    build_option = "--remote" if remote else "--fakeroot"
+
+    build = subprocess.Popen(["singularity", "build", f"{build_option}", "madlad.sif", "singularity"])
     build.wait()
