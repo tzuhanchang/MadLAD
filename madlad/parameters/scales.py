@@ -12,7 +12,10 @@ def edit_scales(settings: Optional[config] = None):
         settings (optional: madlad.utils.config): settings.
     """
     save_dir = settings.process_dir
-    order    = settings.model['order'].lower()
+    try:
+        order = settings.model['order'].lower()
+    except KeyError:
+        order = "nlo"
     settings = settings.scales
 
     if 'custom_scales' not in list(settings.keys()):
