@@ -1,3 +1,4 @@
+import os
 import json
 import subprocess
 
@@ -17,33 +18,37 @@ def get_model(model_name: str, model_dict: Optional[str] = "/app/MG5_aMC_*/model
     with open("madlad/db/models_db.json", "r") as f:
         lookup_dict = json.load(f)
 
-    link = ""
-    for key in list(lookup_dict.keys()):
-        if model_name in key or key in model_name:
-            link = lookup_dict[key]
-            fname = key
-        if model_name == key:
-            link = lookup_dict[key]
-            fname = key
-        if "MSSM_SLHA2" in model_name or "loop_sm" in model_name or "taudecay_UFO" in model_name or "sm" in model_name:
-            return ""
+    main_model_name = model_name.split("-")[0]
+    if os.path.exists(os.path.join(model_dict,main_model_name)) is not True:
+        link = ""
+        for key in list(lookup_dict.keys()):
+            if main_model_name == key:
+                link = lookup_dict[key]
+                model_name = key
+            if main_model_name == "MSSM_SLHA2" or main_model_name == "loop_sm" or main_model_name == "taudecay_UFO":
+                return ""
 
-    if link == "":
-        raise ValueError("Model not found in the MadGraph database. If you think this is an error, please report to https://github.com/tzuhanchang/MadLAD.git.")
+        if link == "":
+            raise ValueError("Model not found in the MadGraph database. If you think this is an error, please report to https://github.com/tzuhanchang/MadLAD.git.")
 
-    download = subprocess.Popen(["sudo","wget","-P",model_dict+"/",link])
-    download.wait()
-    unzip    = subprocess.Popen(["sudo","unzip",model_dict+"/%s.zip"%(fname),"-d",model_dict])
-    unzip.wait()
+        download = subprocess.Popen(["sudo","wget","-P",model_dict+"/",link])
+        download.wait()
 
-    testcard = open('/tmp/convert.dat','w')
-    testcard.write("""convert model %s/%s
-"""%(model_dict,fname))
-    testcard.close()
-    convert = subprocess.Popen(["sudo", "/usr/local/bin/mg5", "/tmp/convert.dat"])
-    convert.wait()
-    cleanup = subprocess.Popen(["rm", "/tmp/convert.dat"])
-    cleanup.wait()
+        file_name = os.path.basename(link)
+        if ".zip" in file_name:
+            unzip = subprocess.Popen(["sudo","unzip",os.path.join(model_dict,file_name),"-d",model_dict])
+        elif ".tar.gz" in file_name or ".tgz" in file_name :
+            unzip = subprocess.Popen(["sudo","tar","-zxvf",os.path.join(model_dict,file_name),"--directory",model_dict])
+        unzip.wait()
+
+        testcard = open('/tmp/convert.dat','w')
+        testcard.write("""convert model %s/%s
+    """%(model_dict,model_name))
+        testcard.close()
+        convert = subprocess.Popen(["sudo", "/usr/local/bin/mg5", "/tmp/convert.dat"])
+        convert.wait()
+        cleanup = subprocess.Popen(["rm", "/tmp/convert.dat"])
+        cleanup.wait()
 
 
 def get_model_singularity(model_name: str, model_dict: str = "/app/MG5_aMC_v2_9_16/models") -> str:
@@ -56,28 +61,32 @@ def get_model_singularity(model_name: str, model_dict: str = "/app/MG5_aMC_v2_9_
     with open("madlad/db/models_db.json", "r") as f:
         lookup_dict = json.load(f)
 
+    main_model_name = model_name.split("-")[0]
     link = ""
     for key in list(lookup_dict.keys()):
-        if model_name in key or key in model_name:
+        if main_model_name == key:
             link = lookup_dict[key]
-            fname = key
-        if model_name == key:
-            link = lookup_dict[key]
-            fname = key
-        if "MSSM_SLHA2" in model_name or "loop_sm" in model_name or "taudecay_UFO" in model_name or "sm" in model_name:
+            model_name = key
+        if main_model_name == "MSSM_SLHA2" or main_model_name == "loop_sm" or main_model_name == "taudecay_UFO":
             return ""
 
     if link == "":
         raise ValueError("Model not found in the MadGraph database. If you think this is an error, please report to https://github.com/tzuhanchang/MadLAD.git.")
     
+    file_name = os.path.basename(link)
+    if ".zip" in file_name:
+        extract_command = "unzip"
+    elif ".tar.gz" in file_name or ".tgz" in file_name :
+        extract_command = "tar -zxvf"
+
     to_write = """
     cd %s
     wget %s
-    unzip %s.zip
+    %s %s
     cd /tmp
     echo -e "convert model %s/%s" > convert.dat
     /usr/local/bin/mg5 convert.dat
     rm convert.dat
-    """%(model_dict, link, fname, model_dict, fname)
+    """%(model_dict, link, extract_command, file_name, model_dict, model_name)
 
     return to_write
