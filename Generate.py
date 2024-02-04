@@ -52,7 +52,7 @@ if __name__ == '__main__':
         warnings.warn("MadLAD is designed to be used inside a containerised environment. You MUST use either Docker or Singularity.")
         confirmation = input("Do you want to continue? (y/n)")
         confirmed = False
-        while confirmation is False:
+        while confirmed is False:
             if confirmation.lower() in ["y","yes"]:
                 confirmed = True
                 pass
@@ -60,12 +60,13 @@ if __name__ == '__main__':
                 raise ValueError("User choose not to continue")
             else:
                 confirmed = False
+        confirmed = True
 
     if args.launch_from is not None:
-        if in_container:
+        if in_container or confirmed:
             get_model(settings.model['model'])
 
-        if in_container:
+        if in_container or confirmed:
             get_pdfset(settings.run['lhaid'])
 
         ecard = open(f"mg5_exec_card-{os.path.basename(args.launch_from)}","w")
@@ -81,14 +82,14 @@ if __name__ == '__main__':
         subprocess.Popen(["rm", f"mg5_exec_card-{os.path.basename(args.launch_from)}"])
     else:
         if hasattr(settings,'model'):
-            if in_container:
+            if in_container or confirmed:
                 get_model(settings.model['model'])
             make_process(settings=settings,madgraph_path=str(args.mg5))
         else:
             raise ValueError("No process provided")
 
         if hasattr(settings,'run'):
-            if in_container:
+            if in_container or confirmed:
                 get_pdfset(settings.run['lhaid'])
             edit_run(settings=settings)
 
