@@ -47,7 +47,6 @@ RUN cd /tmp \
  && make && make check && make install
 
 RUN pip install --upgrade setuptools \
- && pip install yaml \
  && pip install six \
  && ln -fs /usr/bin/python2.7 /usr/bin/python \
  && ln -fs /usr/bin/pip2.7 /usr/bin/pip
