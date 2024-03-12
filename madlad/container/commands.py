@@ -139,7 +139,6 @@ def mg5_build(version: Optional[str] = None, external: Optional[str] = None) -> 
 """
     
     if external is not None:
-        external_mg5_name = external.split("/")[-1]
         docker_command = f"""RUN sudo mkdir -p /app/MG5_aMC
 COPY {external} /app/MG5_aMC
 RUN cd /app/MG5_aMC \\
@@ -152,7 +151,7 @@ RUN cd /app/MG5_aMC \\
  && sudo /usr/local/bin/mg5 mg5_exec_card && cd /
 
 """
-        singularity_command = f"""    sudo mkdir /app && sudo mv /tmp/{external_mg5_name} /app/MG5_aMC && cd /app/MG5_aMC
+        singularity_command = f"""    sudo mkdir /app && sudo mv /tmp/MG5_aMC /app/ && cd /app/MG5_aMC
     sudo ln -fs /app/MG5_aMC/bin/mg5_aMC /usr/local/bin/mg5
     sudo sed -i 's/# pythia8_path = .\/HEPTools\/pythia8/pythia8_path = \/usr\/local/' ./input/mg5_configuration.txt
     sudo sed -i 's/# delphes_path = .\/Delphes/delphes_path = \/usr\/local/' ./input/mg5_configuration.txt
