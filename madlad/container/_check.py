@@ -1,6 +1,5 @@
 import os
 
-
 def is_running_in_docker_container():
     try:
         with open('/proc/1/cgroup', 'r') as f:
@@ -10,7 +9,6 @@ def is_running_in_docker_container():
         return False
     except FileNotFoundError:
         return False
-
 
 def is_running_in_singularity_container():
     try:
