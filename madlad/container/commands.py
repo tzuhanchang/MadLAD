@@ -108,8 +108,9 @@ def mg5_build(version: Optional[str] = None, external: Optional[str] = None) -> 
 
         series = f"{version_number[0]}.0"
         release = f"{version_number[0]}.{version_number[1]}.x"
-
         download_link = f"https://launchpad.net/mg5amcnlo/{series}/{release}/+download/MG5_aMC_v{version}.tar.gz"
+        if release[0] == "2":
+            download_link = f"https://launchpad.net/mg5amcnlo/lts/{release}/+download/MG5_aMC_v{version}.tar.gz"
         file_name = download_link.split("/")[-1]
 
         docker_command = f"""RUN sudo mkdir /app && cd /app && sudo mkdir MG5_aMC \\
