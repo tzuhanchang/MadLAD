@@ -4,26 +4,20 @@ import subprocess
 import warnings
 
 from madlad.parameters import edit_madspin, edit_run, edit_scales, copy_param_card, make_process
-
-from madlad.utils import config, get_model, get_pdfset, is_running_in_docker_container, is_running_in_singularity_container
+from madlad.container import is_running_in_docker_container, is_running_in_singularity_container
+from madlad.utils import config
 
 
 def argparser():
     parser = argparse.ArgumentParser(description='Run event generation')
-    parser.add_argument('-c', '--config', type=str,  required=True,
-                        help='Configuration/settings file.')
-    parser.add_argument('-p', '--mg5',    type=str,  required=False, default="mg5",
-                        help='MadGraph_aMC@NLO full path (default: mg5).')
-    parser.add_argument('--launch_from', type=str, required=False, default=None,
-                        help='Launch the generation from a saved production (default: None).')
-    parser.add_argument('--auto_launch', action=argparse.BooleanOptionalAction,
-                        help='Launch the generation after processing (default: False).')
+    parser.add_argument('-c', '--config', type=str,  required=True, help='Configuration/settings file.')
+    parser.add_argument('-p', '--mg5',    type=str,  required=False, default="mg5", help='MadGraph_aMC@NLO full path (default: mg5).')
+    parser.add_argument('--launch_from', type=str, required=False, default=None, help='Launch the generation from a saved production (default: None).')
+    parser.add_argument('--auto_launch', action=argparse.BooleanOptionalAction, help='Launch the generation after processing (default: False).')
     parser.add_argument('--no_shower',   action=argparse.BooleanOptionalAction,
                         help='Stop the run after the parton level file generation (results without shower are not physical!) (default: False).')
-    parser.add_argument('--seed', type=int, required=False, default=None,
-                        help='Override random seed.')
-    parser.add_argument('--dir',  type=str, required=False, default=None,
-                        help='Override generation directory.')
+    parser.add_argument('--seed', type=int, required=False, default=None, help='Override random seed.')
+    parser.add_argument('--dir',  type=str, required=False, default=None, help='Override generation directory.')
 
     return parser.parse_args()
 
@@ -38,17 +32,11 @@ if __name__ == '__main__':
         settings.process_dir = args.dir
 
     in_container = False
-    use_singularity = False
 
-    if is_running_in_docker_container():
+    if is_running_in_docker_container() or is_running_in_singularity_container():
         in_container = True
-        use_singularity = False
 
-    if is_running_in_singularity_container():
-        in_container = False
-        use_singularity = True
-
-    if in_container is False and use_singularity is False:
+    if in_container is False:
         warnings.warn("MadLAD is designed to be used inside a containerised environment. You MUST use either Docker or Singularity.")
         confirmation = input("Do you want to continue? (y/n)")
         confirmed = False
@@ -63,12 +51,6 @@ if __name__ == '__main__':
         confirmed = True
 
     if args.launch_from is not None:
-        if in_container or confirmed:
-            get_model(settings.model['model'])
-
-        if in_container or confirmed:
-            get_pdfset(settings.run['lhaid'])
-
         ecard = open(f"mg5_exec_card-{os.path.basename(args.launch_from)}","w")
         if args.no_shower:
             ecard.write(f"launch {args.launch_from} -i\ngenerate_events -p")
@@ -82,15 +64,11 @@ if __name__ == '__main__':
         subprocess.Popen(["rm", f"mg5_exec_card-{os.path.basename(args.launch_from)}"])
     else:
         if hasattr(settings,'model'):
-            if in_container or confirmed:
-                get_model(settings.model['model'])
             make_process(settings=settings,madgraph_path=str(args.mg5))
         else:
             raise ValueError("No process provided")
 
         if hasattr(settings,'run'):
-            if in_container or confirmed:
-                get_pdfset(settings.run['lhaid'])
             edit_run(settings=settings)
 
         if hasattr(settings,'param'):
