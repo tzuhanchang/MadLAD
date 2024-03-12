@@ -1,0 +1,20 @@
+# About code owners
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+#
+# Code owners recieve review requests when parts of code they "own" change.
+
+*    @tzuhanchang
+
+*.py @tzuhanchang
+
+/delphes/ @tzuhanchang @els285
+
+/docs/ @tzuhanchang @els285
+
+/examples/ @tzuhanchang @els285
+
+/madlad/ @tzuhanchang
+
+/param/ @tzuhanchang @els285
+
+/processes/ @tzuhanchang @els285
