@@ -10,10 +10,10 @@ def DockerBuild(config: str):
     with open(config) as f:
         settings = yaml.load(f, Loader=yaml.SafeLoader)
 
-    init = """FROM tzuhanchang/madlad:base
+    init = """FROM tzuhanchang/madlad:madlad-base
 
     # metainformation
-    LABEL org.opencontainers.image.base.name="docker.io/library/tzuhanchang/madlad-base"
+    LABEL org.opencontainers.image.base.name="docker.io/library/tzuhanchang/madlad:madlad-base"
 
     """
 
@@ -71,5 +71,5 @@ def DockerBuild(config: str):
         warnings.warn("Use Docker image name `madlad-custom`.")
         image_name = "madlad-custom"
 
-    building = subprocess.Popen(["docker", "build", image_name, "."])
+    building = subprocess.Popen(["docker", "build", "-t", image_name, "."])
     building.wait()
