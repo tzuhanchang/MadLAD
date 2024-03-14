@@ -4,12 +4,13 @@
 
 --------------------------------------------------------------------------------
 
+**[Documentation](https://madlad.readthedocs.io)**
+
 **MadLAD** is a event generation wrapper built upon [MadGraph5](https://launchpad.net/mg5amcnlo)<sup>1</sup>, [Pythia8](https://pythia.org)<sup>2</sup>, [LHAPDF](https://lhapdf.hepforge.org)<sup>3</sup>, [FastJet](http://fastjet.fr)<sup>4</sup> and [Delphes](https://github.com/delphes/delphes)<sup>5</sup>. MadLAD is designed to be used with Docker or Singularity containers, which contain all necessary software and environment setups.
 
 Contributions to this project are warmly welcomed. If you are interested in contributing, please submit a pull request with your implemented new features or fixed bugs.
 
 - [Quick Start](#quick-start)
-- [Generation](#generate)
 
 ## Quick Start
 
@@ -21,7 +22,7 @@ Container building require either Docker or Singularity is installed on your sys
 Specifying software version you need in the build configuration file `config_build.yaml`.
 
 
-## Generate
+#### Generate
 If you want to generate processes defined in one of the presets, make sure you are inside the container (make sure your MadLAD directory is mounted on `/mnt` of the container), and run
 ```
 python3 Generate.py -c processes/ttbar_allhad_nlo.json
