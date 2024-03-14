@@ -1,10 +1,8 @@
 <p align="center">
-  <img height="150" src=".github/logo/madlad_logo.png"/>
+  <img height="150" src="_logo.png"/>
 </p>
 
 --------------------------------------------------------------------------------
-
-**[Documentation](https://madlad.readthedocs.io)**
 
 **MadLAD** is a event generation wrapper built upon [MadGraph5](https://launchpad.net/mg5amcnlo)<sup>1</sup>, [Pythia8](https://pythia.org)<sup>2</sup>, [LHAPDF](https://lhapdf.hepforge.org)<sup>3</sup>, [FastJet](http://fastjet.fr)<sup>4</sup> and [Delphes](https://github.com/delphes/delphes)<sup>5</sup>. MadLAD is designed to be used with Docker or Singularity containers, which contain all necessary software and environment setups.
 

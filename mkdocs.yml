@@ -1,0 +1,9 @@
+site_name: MadLAD
+
+repo_name: tzuhanchang/MadLAD
+repo_url: https://github.com/tzuhanchang/MadLAD
+
+theme:
+  name: readthedocs
+  logo: _logo.png
+  highlightjs: true
