@@ -2,7 +2,8 @@ from types import ModuleType
 from importlib import import_module
 
 import madlad.parameters
-import madlad.utils
+import madlad.container
+import madlad.controls
 
 
 # python/util/lazy_loader.py
@@ -27,10 +28,11 @@ class LazyLoader(ModuleType):
         return dir(module)
 
 
-parameters = LazyLoader('data', globals(), 'madlad.parameters')
-utils = LazyLoader('graphs', globals(), 'madlad.utils')
+parameters = LazyLoader('parameters', globals(), 'madlad.parameters')
+container = LazyLoader('container', globals(), 'madlad.container')
+controls = LazyLoader('controls', globals(), 'madlad.controls')
 
-__version__ = 'v2'
+__version__ = 'v3.0'
 
 
 __all__ = [
