@@ -7,3 +7,18 @@ theme:
   name: readthedocs
   logo: _logo.png
   highlightjs: true
+
+plugins:
+  - search
+  - mkdocstrings
+
+markdown_extensions:
+  - admonition
+
+nav:
+  - Home: index.md
+  - Setup:
+    - Installation: source/installation.md
+  - Tutorials:
+    - Build Containers: source/tutorials/build_containers.md
+    - Event Generation: source/tutorials/generate_events.md
