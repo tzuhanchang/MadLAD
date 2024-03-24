@@ -1,18 +1,17 @@
 import shutil
 
 from os.path import exists
-from madlad.utils import config
-from typing import Optional
+from omegaconf import DictConfig
 
 
-def copy_param_card(settings: Optional[config] = None):
+def copy_param_card(cfg: DictConfig) -> None:
     """Copy the required parameter card defined in :obj:`settings` to :obj:`process_dir`.
     
     Args:
         settings (optional: madlad.utils.config): settings.
     """
-    save_dir = settings.process_dir
-    settings = settings.param
+    save_dir = cfg['gen']['block_model']['save_dir']
+    settings = cfg['gen']['block_param']
 
     paramNameToCopy = "param/"+settings['param']
 

@@ -1,18 +1,18 @@
+import yaml
 import warnings
 
-from madlad.utils import config
-from typing import Optional
+from omegaconf import DictConfig, OmegaConf
 
 
-def edit_run(settings: Optional[config] = None):
+def edit_run(cfg: DictConfig) -> None:
     """Edit `run_card.dat` under the MadGraph process path :obj:`process_dir`.
     
     Args:
         process_dir (optional: str): aMC process directory.
         settings (optional: madlad.utils.config): settings.
     """
-    save_dir = settings.process_dir
-    settings = settings.run
+    save_dir = cfg['gen']['block_model']['save_dir']
+    settings = yaml.load(OmegaConf.to_yaml(cfg['gen']['block_run']), Loader=yaml.SafeLoader)
 
     # Operate on lower case settings, and choose the capitalization MG5 has as the default (or all lower case)
     for s in list(settings.keys()):

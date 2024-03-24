@@ -1,16 +1,15 @@
-from madlad.utils import config
-from typing import Optional
+from omegaconf import DictConfig
 
 
-def edit_madspin(settings: Optional[config] = None):
+def edit_madspin(cfg: DictConfig) -> None:
     r"""Edit `madspin_card.dat` under the MadGraph process path :obj:`process_dir`.
 
     Args:
         process_dir (optional: str): aMC process directory.
         settings (optional: madlad.utils.config): settings.
     """
-    save_dir = settings.process_dir
-    settings = settings.madspin
+    save_dir = cfg['gen']['block_model']['save_dir']
+    settings = cfg['gen']['block_madspin']
 
     if 'decays' not in list(settings.keys()):
         raise ValueError("Cannot find decays, please provide them in the config!")
