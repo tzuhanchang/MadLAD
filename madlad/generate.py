@@ -6,7 +6,7 @@ from madlad.controls import makeProcess, launchEvtGen, cleanUp
 from omegaconf import DictConfig
 
 
-@hydra.main(version_base=None, config_path="../")
+@hydra.main(version_base=None, config_path="../processes")
 def Generate(cfg : DictConfig) -> None:
     logger = logging.getLogger("MadLAD")
 
