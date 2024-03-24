@@ -27,7 +27,7 @@ If you want to generate events with one of our provided processes, run
 ```
 python -m madlad.generate --config-name=ttbar-allhad.yaml
 ```
-This will only produce a production directory, if you want to automatically launch the Matrix Element (ME) or Parton Shower (PS) simulation, use the option `auto-launch=True`. You can also define your own processes and save them to `processes` directory.
+This will only produce a production directory, if you want to automatically launch the Matrix Element (ME) or Parton Shower (PS) simulation, use the option `run.auto-launch=True`. You can also define your own processes and save them to `processes` directory.
 
 
 #### Reference
