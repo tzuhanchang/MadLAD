@@ -14,18 +14,18 @@ Contributions to this project are warmly welcomed. If you are interested in cont
 
 #### Build your own containers
 ```
-python madlad.build -c examples/config_build.yaml
+python -m madlad.build -c examples/config_build.yaml
 ```
 Container building require either Docker or Singularity is installed on your system.
 Specifying software version you need in the build configuration file `config_build.yaml`.
 
 
 #### Generate
-If you want to generate processes defined in one of the presets, make sure you are inside the container (make sure your MadLAD directory is mounted on `/mnt` of the container), and run
+If you want to generate events with one of our provided processes, run
 ```
-python3 Generate.py -c processes/ttbar_allhad_nlo.json
+python -m madlad.generate --config-name=ttbar-allhad.yaml
 ```
-This will only produce a production directory, if you want to automatically launch the Matrix Element (ME) or Parton Shower (PS) simulation, use the option ```--auto_launch```. You can also define your own processes and save them to ```.json``` files.
+This will only produce a production directory, if you want to automatically launch the Matrix Element (ME) or Parton Shower (PS) simulation, use the option `run.auto-launch=True`. You can also define your own processes and save them to `processes` directory.
 
 
 #### Reference
