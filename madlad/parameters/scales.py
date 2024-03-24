@@ -1,22 +1,21 @@
 import warnings
 
-from madlad.utils import config
-from typing import Optional
+from omegaconf import DictConfig
 
 
-def edit_scales(settings: Optional[config] = None):
+def edit_scales(cfg: DictConfig) -> None:
     r"""Use a custom dynmaical scale by editing `setscales.f` under :obj:`process_dir`/SubProcesses.
 
     Args:
         process_dir (optional: str): aMC process directory.
         settings (optional: madlad.utils.config): settings.
     """
-    save_dir = settings.process_dir
+    save_dir = cfg['gen']['block_model']['save_dir']
     try:
-        order = settings.model['order'].lower()
+        order = cfg['gen']['block_model']['order'].lower()
     except KeyError:
         order = "nlo"
-    settings = settings.scales
+    settings = cfg['gen']['block_sf']
 
     if 'custom_scales' not in list(settings.keys()):
         raise ValueError("Cannot find `custom_scales`, please provide it in config.")

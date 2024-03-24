@@ -1,18 +1,16 @@
 import os
-import subprocess
 
-from madlad.utils import config
-from typing import Optional
+from omegaconf import DictConfig
 
 
-def make_process(settings: Optional[config] = None, madgraph_path: Optional[str] = None):
+def make_process(cfg : DictConfig) -> None:
     """Make the process defined in :obj:`settings` and save to :obj:`process_dir`.
 
     Args:
         settings (optional: madlad.utils.config): settings.
     """
-    save_dir = settings.process_dir
-    settings = settings.model
+    save_dir = cfg['gen']['block_model']['save_dir']
+    settings = cfg['gen']['block_model']
 
     try:
         model = "import model " + settings['model']
@@ -45,8 +43,3 @@ def make_process(settings: Optional[config] = None, madgraph_path: Optional[str]
     ) )
 
     fcard.close()
-
-    gen = subprocess.Popen([madgraph_path, f"proc_card_mg5-{os.path.basename(save_dir)}.dat"])
-    gen.wait()
-
-    subprocess.Popen(["rm", f"proc_card_mg5-{os.path.basename(save_dir)}.dat"])

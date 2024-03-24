@@ -1,11 +1,10 @@
 from .commands import lhapdf_build, fastjet_build, pythia8_build, delphes_build, mg5_build
 from .download import get_model, get_pdfset
 from .build import DockerBuild, SingularityBuild
-from ._check import is_running_in_docker_container, is_running_in_singularity_container
+from ._check import checkImage
 
 __all__ = [
-    'is_running_in_docker_container',
-    'is_running_in_singularity_container',
+    'checkImage',
     'lhapdf_build',
     'fastjet_build',
     'pythia8_build',
