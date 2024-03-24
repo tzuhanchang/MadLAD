@@ -1,7 +1,7 @@
 run:
   image:       "madlad-custom"
   mg5:         "/app/MG5_aMC/bin/mg5_aMC"
-  launch-from: "Output"
+  launch-from: null
   auto-launch: False
   no-shower:   False
 
