@@ -1,3 +1,5 @@
+import os
+
 from omegaconf import DictConfig
 
 
@@ -14,7 +16,7 @@ def edit_madspin(cfg: DictConfig) -> None:
     if 'decays' not in list(settings.keys()):
         raise ValueError("Cannot find decays, please provide them in the config!")
     
-    madspin_card_loc=save_dir+'/Cards/madspin_card.dat'
+    madspin_card_loc = os.path.join(save_dir, "Cards", "madspin_card.dat")
     mscard = open(madspin_card_loc,'w')
 
     try:
@@ -92,3 +94,4 @@ launch
      decays
     )
 )
+    mscard.close()
