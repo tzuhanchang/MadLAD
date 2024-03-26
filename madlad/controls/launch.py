@@ -24,7 +24,7 @@ def launchEvtGen(cfg : DictConfig, dir: str, logger) -> None:
 
     if which("docker") is not None:
         logger.info('Running MG5 event generation using Docker.')
-        gen = subprocess.Popen(
+        subprocess.run(
             [
                 "docker", "run", "--rm", "-it", "-w", "/home/atreus/data",
                 "-v", f"{Path().absolute()}:/home/atreus/data",
@@ -35,12 +35,10 @@ def launchEvtGen(cfg : DictConfig, dir: str, logger) -> None:
 
     elif which("singularity") is not None:
         logger.info('Running MG5 event generation using Singularity.')
-        gen = subprocess.Popen(
+        subprocess.run(
             [
                 "singularity", "exec", "--bind", f"{Path().absolute()}",
                 image_name, cfg['run']['mg5'],
                 f"mg5_exec_card-{os.path.basename(dir)}"
             ]
         )
-
-    gen.wait()
