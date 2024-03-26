@@ -79,7 +79,7 @@ def SingularityBuild(config: str):
         settings = yaml.load(f, Loader=yaml.SafeLoader)
 
     external_mg5 = "." in settings['build']['mg5']
-    move = f"{settings['build']['mg5']} /tmp/MG5_aMC" if external_mg5 is False else ""
+    move = f"{settings['build']['mg5']} /home/atreus/singularity-build/MG5_aMC" if external_mg5 is False else ""
 
     init = f"""Bootstrap: docker
 From: tzuhanchang/madlad:madlad-base
@@ -88,6 +88,7 @@ From: tzuhanchang/madlad:madlad-base
     {move}
     
 %post
+    mkdir -p /home/atreus/singularity-build
 """
 
     with open("singularity", "w") as text_file:
@@ -137,6 +138,8 @@ From: tzuhanchang/madlad:madlad-base
         except KeyError:
             warnings.warn("No optional models provided, none will be downloaded.")
             pass
+
+        text_file.write("rm -r /home/atreus/singularity-build")
 
     try:
         image_name = settings['image']['name']
