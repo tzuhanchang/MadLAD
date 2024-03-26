@@ -16,7 +16,7 @@ def fastjet_build(version: str) -> Tuple[str,str]:
 
 """
     
-    singularity_command = f"""    cd /home/atreus/singularity-build
+    singularity_command = f"""    cd /tmp
     wget {download_link}
     tar -zxf fastjet-{version}.tar.gz
     cd fastjet-3.4.0 && ./configure --prefix=/usr/local
@@ -40,7 +40,7 @@ def delphes_build(version: str) -> Tuple[str,str]:
 
 """
     
-    singularity_command = f"""    cd /home/atreus/singularity-build
+    singularity_command = f"""    cd /tmp
     wget {download_link}
     tar -zxf Delphes-{version}.tar.gz && mkdir Delphes_build && cd Delphes_build
     cmake ../Delphes-{version} && sudo make install
@@ -63,7 +63,7 @@ def lhapdf_build(version: str) -> Tuple[str,str]:
 
 """
     
-    singularity_command = f"""    cd /home/atreus/singularity-build
+    singularity_command = f"""    cd /tmp
     wget {download_link} -O LHAPDF-{version}.tar.gz
     tar -zxf LHAPDF-{version}.tar.gz && cd LHAPDF-{version}
     ./configure LIBS="-L/usr/local/lib/python3.9" --prefix=/usr/local
@@ -90,7 +90,7 @@ def pythia8_build(version: str) -> Tuple[str,str]:
  && sudo make && sudo make install
 
 """
-    singularity_command = f"""    cd /home/atreus/singularity-build
+    singularity_command = f"""    cd /tmp
     wget {download_link}
     tar -xf pythia8{release}.tar && cd pythia8{release}
     ./configure --prefix=/usr/local --with-hepmc2=/usr/local --with-hepmc2-include=/usr/local/include --with-lhapdf6=/usr/local --with-lhapdf6-plugin=LHAPDF6.h
@@ -133,7 +133,7 @@ def mg5_build(version: Optional[str] = None, external: Optional[str] = None) -> 
     sudo sed -i 's/# delphes_path = .\/Delphes/delphes_path = \/usr\/local/' ./input/mg5_configuration.txt
     sudo sed -i 's/# lhapdf_py3 = lhapdf-config/lhapdf_py3 = \/usr\/local\/bin\/lhapdf-config/' ./input/mg5_configuration.txt
     sudo sed -i 's/# fastjet = fastjet-config/fastjet = \/usr\/local\/bin\/fastjet-config/' ./input/mg5_configuration.txt
-    cd /home/atreus/singularity-build && echo -e "import model loop_sm-no_b_mass\\ninstall mg5amc_py8_interface\\ngenerate p p > t t~ [QCD]\\noutput mg5_test_run" > mg5_exec_card
+    cd /tmp && echo -e "import model loop_sm-no_b_mass\\ninstall mg5amc_py8_interface\\ngenerate p p > t t~ [QCD]\\noutput mg5_test_run" > mg5_exec_card
     sudo /usr/local/bin/mg5 mg5_exec_card && cd /
 
 """
@@ -151,13 +151,13 @@ RUN cd /app/MG5_aMC \\
  && sudo /usr/local/bin/mg5 mg5_exec_card && cd /
 
 """
-        singularity_command = f"""    sudo mkdir /app && sudo mv /home/atreus/singularity-build/MG5_aMC /app/ && cd /app/MG5_aMC
+        singularity_command = f"""    sudo mkdir /app && sudo mv /tmp/MG5_aMC /app/ && cd /app/MG5_aMC
     sudo ln -fs /app/MG5_aMC/bin/mg5_aMC /usr/local/bin/mg5
     sudo sed -i 's/# pythia8_path = .\/HEPTools\/pythia8/pythia8_path = \/usr\/local/' ./input/mg5_configuration.txt
     sudo sed -i 's/# delphes_path = .\/Delphes/delphes_path = \/usr\/local/' ./input/mg5_configuration.txt
     sudo sed -i 's/# lhapdf_py3 = lhapdf-config/lhapdf_py3 = \/usr\/local\/bin\/lhapdf-config/' ./input/mg5_configuration.txt
     sudo sed -i 's/# fastjet = fastjet-config/fastjet = \/usr\/local\/bin\/fastjet-config/' ./input/mg5_configuration.txt
-    cd /home/atreus/singularity-build && echo -e "import model loop_sm-no_b_mass\\ninstall mg5amc_py8_interface\\ngenerate p p > t t~ [QCD]\\noutput mg5_test_run" > mg5_exec_card
+    cd /tmp && echo -e "import model loop_sm-no_b_mass\\ninstall mg5amc_py8_interface\\ngenerate p p > t t~ [QCD]\\noutput mg5_test_run" > mg5_exec_card
     sudo /usr/local/bin/mg5 mg5_exec_card && cd /
 
 """
