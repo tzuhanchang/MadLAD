@@ -22,7 +22,7 @@ def makeProcess(cfg : DictConfig, logger) -> None:
 
     if which("docker") is not None:
         logger.info('Creating a MG5 run directory with Docker.')
-        gen = subprocess.Popen(
+        subprocess.run(
             [
                 "docker", "run", "--rm", "-it", "-w", "/home/atreus/data",
                 "-v", f"{Path().absolute()}:/home/atreus/data",
@@ -33,15 +33,13 @@ def makeProcess(cfg : DictConfig, logger) -> None:
     
     elif which("singularity") is not None:
         logger.info('Creating a MG5 run directory with Singularity.')
-        gen = subprocess.Popen(
+        subprocess.run(
             [
                 "singularity", "exec", "--bind", f"{Path().absolute()}",
                 image_name, cfg['run']['mg5'],
                 f"proc_card_mg5-{os.path.basename(cfg['gen']['block_model']['save_dir'])}.dat"
             ]
         )
-
-    gen.wait()
 
 
     if 'block_run' in list(cfg['gen'].keys()):

@@ -71,8 +71,7 @@ def DockerBuild(config: str):
         warnings.warn("Use Docker image name `madlad-custom`.")
         image_name = "madlad-custom"
 
-    building = subprocess.Popen(["docker", "build", "-t", image_name, "."])
-    building.wait()
+    subprocess.run(["docker", "build", "-t", image_name, "."])
 
 
 def SingularityBuild(config: str):
@@ -145,5 +144,4 @@ From: tzuhanchang/madlad:madlad-base
         warnings.warn("Use singularity image name `madlad-custom`.")
         image_name = "madlad-custom"
 
-    building = subprocess.Popen(["singularity", "build", f"{image_name}.sif", "singularity"])
-    building.wait()
+    subprocess.run(["singularity", "build", f"{image_name}.sif", "singularity"])
