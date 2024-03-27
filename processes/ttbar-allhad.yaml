@@ -10,6 +10,7 @@ gen:
     model:          loop_sm-no_b_mass
     multiparticle:  ["p = g u c d s u~ c~ d~ s~ b b~", "j = g u c d s u~ c~ d~ s~ b b~"]
     proc:           "p p > t t~ [QCD]"
+    order:          "nlo"
     save_dir:       "Output"
 
   block_run:
