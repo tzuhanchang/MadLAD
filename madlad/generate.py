@@ -1,7 +1,7 @@
 import hydra
 import logging
 
-from madlad.controls import makeProcess, launchEvtGen, cleanUp
+from madlad.controls import makeProcess, launchEvtGen, runPost, cleanUp
 
 from omegaconf import DictConfig
 
@@ -18,6 +18,8 @@ def Generate(cfg : DictConfig) -> None:
 
         if cfg['run']['auto-launch']:
             launchEvtGen(cfg, cfg['gen']['block_model']['save_dir'], logger)
+
+    runPost(cfg, logger)
 
     cleanUp(cfg, logger)
 
