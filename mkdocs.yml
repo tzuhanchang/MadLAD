@@ -22,3 +22,5 @@ nav:
   - Tutorials:
     - Build Containers: source/tutorials/build_containers.md
     - Event Generation: source/tutorials/generate_events.md
+  - Advanced:
+    - Running on HTCondor: source/advanced/htcondor.md
