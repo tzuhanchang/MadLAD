@@ -1,3 +1,4 @@
+import os
 import yaml
 
 from shutil import which
@@ -33,13 +34,23 @@ def checkImage(cfg : DictConfig, logger) -> str:
         logger.warning("No image is provided, MadLAD will build a default image, it may not have the models or pdfs you need. \
             \nThe run might fail! To cancel this, press CONTROL+C.")
 
-        if which("docker") is not None:
+        if run_with == "docker":
             DockerBuild('examples/config_build.yaml')
             image_name = "madlad-custom"
 
-        elif which("singularity") is not None:
+        if run_with == "singularity":
             SingularityBuild('examples/config_build.yaml')
             image_name = "madlad-custom.sif"
+
+    elif os.path.isfile(cfg['run']['image']) is False:
+        if run_with == "docker":
+            DockerBuild('examples/config_build.yaml')
+            image_name = "madlad-custom"
+
+        if run_with == "singularity":
+            SingularityBuild('examples/config_build.yaml')
+            image_name = "madlad-custom.sif"
+
     else:
         image_name = cfg['run']['image'] if which("docker") is not None else cfg['run']['image']+'.sif'
 
