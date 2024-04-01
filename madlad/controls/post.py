@@ -12,7 +12,7 @@ def runPost(cfg : DictConfig, logger) -> None:
     r"""Launch event generation.
     """
     if 'post' in list(cfg.keys()):
-        image_name = checkImage(cfg, logger)
+        image_name, run_with = checkImage(cfg, logger)
 
         logger.info('Writting post commands.')
         ecard = open("post-commands","w")
@@ -20,7 +20,7 @@ def runPost(cfg : DictConfig, logger) -> None:
             ecard.write(str(command)+'\n')
         ecard.close()
 
-        if which("docker") is not None:
+        if run_with == "docker":
             logger.info('Running post commands using Docker.')
             subprocess.run(
                 [
@@ -30,7 +30,7 @@ def runPost(cfg : DictConfig, logger) -> None:
                 ]
             )
 
-        elif which("singularity") is not None:
+        if run_with == "singularity":
             logger.info('Running post commands using Singularity.')
             subprocess.run(
                 [

@@ -12,7 +12,7 @@ from omegaconf import DictConfig
 def makeProcess(cfg : DictConfig, logger) -> None:
     r"""Create a MadGraph process.
     """
-    image_name = checkImage(cfg, logger)
+    image_name, run_with = checkImage(cfg, logger)
 
     if 'block_model' not in list(cfg['gen'].keys()):
         logger.error("`block_model` must be provided!")
@@ -20,7 +20,7 @@ def makeProcess(cfg : DictConfig, logger) -> None:
     logger.info('Creating MG5 process.')
     make_process(cfg)
 
-    if which("docker") is not None:
+    if run_with == "docker":
         logger.info('Creating a MG5 run directory with Docker.')
         subprocess.run(
             [
@@ -30,8 +30,8 @@ def makeProcess(cfg : DictConfig, logger) -> None:
                 f"proc_card_mg5-{os.path.basename(cfg['gen']['block_model']['save_dir'])}.dat"
             ]
         )
-    
-    elif which("singularity") is not None:
+
+    if run_with == "singularity":
         logger.info('Creating a MG5 run directory with Singularity.')
         subprocess.run(
             [
@@ -40,7 +40,6 @@ def makeProcess(cfg : DictConfig, logger) -> None:
                 f"proc_card_mg5-{os.path.basename(cfg['gen']['block_model']['save_dir'])}.dat"
             ]
         )
-
 
     if 'block_run' in list(cfg['gen'].keys()):
         logger.info('Editing MG5 run card.')

@@ -12,10 +12,13 @@ def argparser():
 if __name__ == '__main__':
     args = argparser()
 
-    if which("docker"):
+    if which("docker") is not None and which("singularity") is not None:
+        SingularityBuild(args.config)
+
+    if which("docker") is not None:
         DockerBuild(args.config)
-    
-    elif which("singularity"):
+
+    elif which("singularity") is not None:
         SingularityBuild(args.config)
 
     else:
