@@ -11,7 +11,7 @@ from omegaconf import DictConfig
 def launchEvtGen(cfg : DictConfig, dir: str, logger) -> None:
     r"""Launch event generation.
     """
-    image_name = checkImage(cfg, logger)
+    image_name, run_with = checkImage(cfg, logger)
 
     ecard = open(f"mg5_exec_card-{os.path.basename(dir)}","w")
     if cfg['run']['no-shower']:
@@ -25,7 +25,7 @@ def launchEvtGen(cfg : DictConfig, dir: str, logger) -> None:
         ecard.write(f"launch {dir}")
     ecard.close()
 
-    if which("docker") is not None:
+    if run_with == "docker":
         logger.info('Running MG5 event generation using Docker.')
         subprocess.run(
             [
@@ -36,7 +36,7 @@ def launchEvtGen(cfg : DictConfig, dir: str, logger) -> None:
             ]
         )
 
-    elif which("singularity") is not None:
+    if run_with == "singularity":
         logger.info('Running MG5 event generation using Singularity.')
         subprocess.run(
             [
