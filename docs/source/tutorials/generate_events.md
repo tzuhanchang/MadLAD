@@ -6,6 +6,15 @@ Generate events with MadLAD is simple, all you need are:
  * A pre-built MadLAD image (see [here](build_containers.md))
  * A configuration file
 
+To generate events, run
+```
+python -m madlad.generate --config-name=ttbar-allhad.yaml [options]
+```
+MadLAD uses [hydra](https://hydra.cc) for configuring run ([#23](https://github.com/tzuhanchang/MadLAD/pull/23)). You can overwrite any option using, for example `run.auto-launch=True` at the end, it overwrites the `auto-launch` option provided in your configuration file.
+
+!!! Note
+
+    Any custom configuration file must be place in `processes` folder.
 
 A configuration file contains necessary information for the generation, such as the model, physics process and center-of-mass energy, etc.
 In this tutorial, we will use ttbar events with all-hadronic final states as an example, whose configuration file can be found in `processes/ttbar-allhad.yaml`.
@@ -75,14 +84,3 @@ In this configuration file, there are three sections: `run`, `gen` and `post`.
 Configures in `run` controls how MadLAD launch MadGraph.
 `gen` contains various control blocks: `block_model`, `block_run`, `block_madspin`, `block_param` and `block_sf`, they are used to overwrite correponding options in different MadGraph's `Cards`.
 Finally, `post` is a list of `bash` commands that tells what MadLAD should execute after event generation, such as running Delphes detector simulation.
-
-!!! Note
-
-    Any custom configuration file must be place in `processes` folder.
-
-
-To generate events, run
-```
-python -m madlad.generate --config-name=ttbar-allhad.yaml [options]
-```
-MadLAD uses [hydra](https://hydra.cc) for configuring run ([#23](https://github.com/tzuhanchang/MadLAD/pull/23)). You can overwrite any option using, for example `run.auto-launch=True` at the end, it overwrites the `auto-launch` option provided in your configuration file.
