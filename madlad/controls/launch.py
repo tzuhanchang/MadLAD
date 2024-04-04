@@ -16,7 +16,7 @@ def launchEvtGen(cfg : DictConfig, dir: str, logger) -> None:
     ecard = open(f"mg5_exec_card-{os.path.basename(dir)}","w")
     if cfg['run']['no-shower']:
         logger.info('Writing Gen card, without parton shower.')
-        if cfg['gen']['no-block_model']['order'].lower() == "lo":
+        if cfg['gen']['block_model']['order'].lower() == "lo":
             ecard.write(f"launch {dir} -i\ngenerate_events")
         else:
             ecard.write(f"launch {dir} -i\ngenerate_events -p")
