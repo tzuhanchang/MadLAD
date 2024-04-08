@@ -139,7 +139,7 @@ From: tzuhanchang/madlad:madlad-base
             warnings.warn("No optional models provided, none will be downloaded.")
             pass
 
-        text_file.write("rm -r /home/atreus/singularity-build")
+        text_file.write("    rm -r /home/atreus/singularity-build")
 
     try:
         image_name = settings['image']['name']
