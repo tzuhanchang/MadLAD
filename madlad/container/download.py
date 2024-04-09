@@ -34,16 +34,30 @@ def get_model(model_names: List|str, model_dict: str = "/app/MG5_aMC/models", bu
                     extract_command = "unzip"
                 elif ".tar.gz" in file_name or ".tgz" in file_name :
                     extract_command = "tar -zxvf"
-                
-                to_write += [
-                "cd %s"%(model_dict),
-                "sudo wget %s"%(lookup_dict[key]),
-                "sudo %s %s"%(extract_command, file_name),
-                "cd /tmp",
-                "sudo echo -e \"convert model %s/%s\" > convert.dat"%(model_dict, main_model_name),
-                "sudo /usr/local/bin/mg5 convert.dat",
-                "sudo rm convert.dat"
-                ]
+
+                if build_method == "docker":
+                    to_write += [
+                        "",
+                        "cd %s"%(model_dict),
+                        "sudo wget %s"%(lookup_dict[key]),
+                        "sudo %s %s"%(extract_command, file_name),
+                        "cd /tmp",
+                        "sudo echo -e \"convert model %s/%s\" > convert.dat"%(model_dict, main_model_name),
+                        "sudo /usr/local/bin/mg5 convert.dat",
+                        "sudo rm convert.dat"
+                    ]
+                elif build_method == "singularity":
+                    to_write += [
+                        "",
+                        "mkdir -p /home/atreus/singularity-build/models",
+                        "cd /home/atreus/singularity-build/models",
+                        "wget %s"%(lookup_dict[key]),
+                        "%s %s"%(extract_command, file_name),
+                        "mv * %s"%(model_dict),
+                        "echo -e \"convert model %s/%s\" > convert.dat"%(model_dict, main_model_name),
+                        "/usr/local/bin/mg5 convert.dat",
+                        "rm convert.dat"
+                    ]
 
     if to_write == []:
         raise ValueError("Model not found in the MadGraph database. If you think this is an error, please report to https://github.com/tzuhanchang/MadLAD.git.")
@@ -85,19 +99,25 @@ def get_pdfset(pdf_ids: List|int, pdfsets_dict: Optional[str] = "/usr/local/shar
         all_pdfs = json.load(f)
         if is_int:
             try:
-                pdf_links = "sudo wget http://lhapdfsets.web.cern.ch/lhapdfsets/current/%s.tar.gz && sudo tar -zxf %s.tar.gz"%(all_pdfs[str(pdf_ids)],all_pdfs[str(pdf_ids)])
+                if build_method == "docker":
+                    pdf_links = "sudo wget http://lhapdfsets.web.cern.ch/lhapdfsets/current/%s.tar.gz && sudo tar -zxf %s.tar.gz"%(all_pdfs[str(pdf_ids)],all_pdfs[str(pdf_ids)])
+                elif build_method == "singularity":
+                    pdf_links = "wget http://lhapdfsets.web.cern.ch/lhapdfsets/current/%s.tar.gz && tar -zxf %s.tar.gz"%(all_pdfs[str(pdf_ids)],all_pdfs[str(pdf_ids)])
             except KeyError:
                 raise ValueError("PDF ID not found in the LHAPDF database. If you think this is an error, please report to https://github.com/tzuhanchang/MadLAD.git.")
         else:
             try:
-                pdf_links = [ "sudo wget http://lhapdfsets.web.cern.ch/lhapdfsets/current/%s.tar.gz && sudo tar -zxf %s.tar.gz"%(all_pdfs[str(pdf_id)],all_pdfs[str(pdf_id)]) for pdf_id in pdf_ids ]
+                if build_method == "docker":
+                    pdf_links = [ "sudo wget http://lhapdfsets.web.cern.ch/lhapdfsets/current/%s.tar.gz && sudo tar -zxf %s.tar.gz"%(all_pdfs[str(pdf_id)],all_pdfs[str(pdf_id)]) for pdf_id in pdf_ids ]
+                elif build_method == "singularity":
+                    pdf_links = [ "wget http://lhapdfsets.web.cern.ch/lhapdfsets/current/%s.tar.gz && tar -zxf %s.tar.gz"%(all_pdfs[str(pdf_id)],all_pdfs[str(pdf_id)]) for pdf_id in pdf_ids ]
             except KeyError:
                 raise ValueError("PDF ID not found in the LHAPDF database. If you think this is an error, please report to https://github.com/tzuhanchang/MadLAD.git.")
 
-    to_write = ["cd %s"%(pdfsets_dict)].append(pdf_links) if is_int else ["cd %s"%(pdfsets_dict)]+pdf_links
-
     write_out = ""
     if build_method == "docker":
+        to_write = ["","cd %s"%(pdfsets_dict)].append(pdf_links) if is_int else ["","cd %s"%(pdfsets_dict)]+pdf_links
+
         for idx, line in enumerate(to_write):
             if idx == 0:
                 write_out += "RUN %s \ \n"%(line)
@@ -107,6 +127,18 @@ def get_pdfset(pdf_ids: List|int, pdfsets_dict: Optional[str] = "/usr/local/shar
                 write_out += " && %s \ \n"%(line)
     
     elif build_method == "singularity":
+        to_write = [
+            "",
+            "mkdir -p /home/atreus/singularity-build/pdfs",
+            "cd /home/atreus/singularity-build/pdfs",
+            pdf_links,
+            "mv * %s"%(pdfsets_dict)
+        ] if is_int else [
+            "",
+            "mkdir -p /home/atreus/singularity-build/pdfs",
+            "cd /home/atreus/singularity-build/pdfs",
+        ]+pdf_links+["mv * %s"%(pdfsets_dict)]
+
         for idx, line in enumerate(to_write):
                 write_out += "    %s \n"%(line)
 
