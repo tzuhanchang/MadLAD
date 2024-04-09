@@ -10,3 +10,7 @@ Tops
 - $t\bar{t}$:
 
     * All-hadronic: `ttbar-allhad`.
+
+- $t\bar{t}t\bar{t}$:
+
+    * Inclusive: `4top`.
