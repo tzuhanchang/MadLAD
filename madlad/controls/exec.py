@@ -1,6 +1,5 @@
 import os
 
-from shutil import which
 import subprocess
 from pathlib import Path
 from madlad.container import checkImage
@@ -16,6 +15,10 @@ def makeProcess(cfg : DictConfig, logger) -> None:
 
     if 'block_model' not in list(cfg['gen'].keys()):
         logger.error("`block_model` must be provided!")
+
+    NUM_CPUS = 1024     # Singularity default
+    if os.environ.get('OMP_NUM_THREADS') is not None:
+        NUM_CPUS = os.environ.get('OMP_NUM_THREADS')
 
     logger.info('Creating MG5 process.')
     make_process(cfg)
@@ -35,7 +38,7 @@ def makeProcess(cfg : DictConfig, logger) -> None:
         logger.info('Creating a MG5 run directory with Singularity.')
         subprocess.run(
             [
-                "singularity", "exec", "--bind", f"{Path().absolute()}",
+                "singularity", "exec", "--cpus", NUM_CPUS, "--bind", f"{Path().absolute()}",
                 image_name, cfg['run']['mg5'],
                 f"proc_card_mg5-{os.path.basename(cfg['gen']['block_model']['save_dir'])}.dat"
             ]
