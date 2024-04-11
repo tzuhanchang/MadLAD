@@ -54,6 +54,9 @@ gen:
         "          temp_scale_id='H_T/4 := sum_i mT(i)/4, i=final state'"
     ]
 
+  block_delphes:
+    delphes_card: "ATLAS_sim_FASTJET.tcl"
+
 post: [
   "echo 'Finished'"
 ]

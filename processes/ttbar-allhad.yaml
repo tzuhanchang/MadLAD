@@ -54,6 +54,9 @@ gen:
         "              "
     ]
 
+  block_delphes:
+    delphes_card: "ATLAS_sim_FASTJET.tcl"
+
 post: [
   "echo 'Finished'"
 ]
