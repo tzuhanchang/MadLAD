@@ -3,7 +3,7 @@ run:
   mg5:         "/app/MG5_aMC/bin/mg5_aMC"
   launch-from: null
   auto-launch: False
-  no-shower:   False
+  shower:      True
 
 gen:
   block_model:
