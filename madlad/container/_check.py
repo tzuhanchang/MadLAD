@@ -42,16 +42,11 @@ def checkImage(cfg : DictConfig, logger) -> str:
             SingularityBuild('examples/config_build.yaml')
             image_name = "madlad-custom.sif"
 
-    elif os.path.isfile(cfg['run']['image']) is False:
-        if run_with == "docker":
-            DockerBuild('examples/config_build.yaml')
-            image_name = "madlad-custom"
+    else:
+        image_name = cfg['run']['image']
 
         if run_with == "singularity":
-            SingularityBuild('examples/config_build.yaml')
-            image_name = "madlad-custom.sif"
-
-    else:
-        image_name = cfg['run']['image'] if which("docker") is not None else cfg['run']['image']+'.sif'
+            if image_name[-4:] != ".sif":
+                image_name += '.sif'
 
     return image_name, run_with
