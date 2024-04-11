@@ -1,9 +1,9 @@
 import os
 
-from shutil import which
 import subprocess
 from pathlib import Path
 from madlad.container import checkImage
+from madlad.controls import runDelphes
 
 from omegaconf import DictConfig
 
@@ -45,3 +45,5 @@ def launchEvtGen(cfg : DictConfig, dir: str, logger) -> None:
                 f"mg5_exec_card-{os.path.basename(dir)}"
             ]
         )
+
+    runDelphes(cfg, dir, run_with, image_name, logger)
