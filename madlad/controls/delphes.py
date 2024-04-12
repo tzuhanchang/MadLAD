@@ -21,7 +21,7 @@ def runDelphes(cfg : DictConfig, dir: str, run_with: str, image_name: str, logge
             file_name = 'tag_1_pythia8_events.hepmc' if shower else 'unweighted_events.lhe'
 
         ecard = open(f"delphes_exec_card-{os.path.basename(dir)}","w")
-        ecard.write(f"gunzip {dir}/Events/{evt_dir}/{file_name}+'.gz' \n")
+        ecard.write(f"gunzip {dir}/Events/{evt_dir}/{file_name}.gz \n")
         if shower:
             ecard.write(f"DelphesHepMC2 delphes/{cfg['gen']['block_delphes']['delphes_card']} {dir}.root {dir}/Events/{evt_dir}/{file_name}")
         else:
