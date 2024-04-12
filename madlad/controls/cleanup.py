@@ -13,6 +13,9 @@ def cleanUp(cfg : DictConfig, logger) -> None:
     if os.path.exists(f"mg5_exec_card-{os.path.basename(cfg['gen']['block_model']['save_dir'])}"):
         subprocess.Popen(["rm", f"mg5_exec_card-{os.path.basename(cfg['gen']['block_model']['save_dir'])}"])
 
+    if os.path.exists(f"delphes_exec_card-{os.path.basename(cfg['gen']['block_model']['save_dir'])}"):
+        subprocess.Popen(["rm", f"delphes_exec_card-{os.path.basename(cfg['gen']['block_model']['save_dir'])}"])
+
     if os.path.exists("post-commands"):
         subprocess.Popen(["rm", "post-commands"])
 
