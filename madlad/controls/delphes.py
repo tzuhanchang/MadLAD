@@ -1,4 +1,5 @@
 import os
+import glob
 
 import subprocess
 from pathlib import Path
@@ -15,17 +16,14 @@ def runDelphes(cfg : DictConfig, dir: str, run_with: str, image_name: str, logge
         evt_dir = 'run_01_decayed_1' if 'block_madspin' in list(cfg['gen'].keys()) else 'run_01'
 
         shower = True if 'shower' in list(cfg['run'].keys()) and cfg['run']['shower'] is True else False
-        if cfg['gen']['block_model']['order'] == "nlo" or 'order' not in list(cfg['gen']['block_model']):
-            file_name = 'events_PYTHIA8_0.hepmc' if shower else 'events.lhe'
-        else:
-            file_name = 'tag_1_pythia8_events.hepmc' if shower else 'unweighted_events.lhe'
+        file_name = glob.glob(f'{dir}/Events/{evt_dir}/*.hepmc.gz')[0] if shower else glob.glob(f'{dir}/Events/{evt_dir}/*.lhe.gz')[0]
 
         ecard = open(f"delphes_exec_card-{os.path.basename(dir)}","w")
-        ecard.write(f"gunzip {dir}/Events/{evt_dir}/{file_name}.gz \n")
+        ecard.write(f"gunzip {dir}/Events/{evt_dir}/{file_name} \n")
         if shower:
-            ecard.write(f"DelphesHepMC2 delphes/{cfg['gen']['block_delphes']['delphes_card']} {dir}.root {dir}/Events/{evt_dir}/{file_name}")
+            ecard.write(f"DelphesHepMC2 delphes/{cfg['gen']['block_delphes']['delphes_card']} {dir}.root {file_name[:-3]}")
         else:
-            ecard.write(f"DelphesLHEF delphes/{cfg['gen']['block_delphes']['delphes_card']} {dir}.root {dir}/Events/{evt_dir}/{file_name}")
+            ecard.write(f"DelphesLHEF delphes/{cfg['gen']['block_delphes']['delphes_card']} {dir}.root {file_name[:-3]}")
         ecard.close()
 
         if run_with == "docker":
