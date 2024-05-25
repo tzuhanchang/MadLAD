@@ -19,7 +19,7 @@ def runDelphes(cfg : DictConfig, dir: str, run_with: str, image_name: str, logge
         file_name = glob.glob(f'{dir}/Events/{evt_dir}/*.hepmc.gz')[0] if shower else glob.glob(f'{dir}/Events/{evt_dir}/*.lhe.gz')[0]
 
         ecard = open(f"delphes_exec_card-{os.path.basename(dir)}","w")
-        ecard.write(f"gunzip {dir}/Events/{evt_dir}/{file_name} \n")
+        ecard.write(f"gunzip {file_name} \n")
         if shower:
             ecard.write(f"DelphesHepMC2 delphes/{cfg['gen']['block_delphes']['delphes_card']} {dir}.root {file_name[:-3]}")
         else:
