@@ -3,7 +3,7 @@ import os
 import subprocess
 from pathlib import Path
 from madlad.container import checkImage
-from madlad.controls import runDelphes
+from madlad.controls import runDelphes, runShower
 
 from omegaconf import DictConfig
 
@@ -45,5 +45,8 @@ def launchEvtGen(cfg : DictConfig, dir: str, logger) -> None:
                 f"mg5_exec_card-{os.path.basename(dir)}"
             ]
         )
+
+    if cfg['run']['shower'] and cfg['gen']['block_model']['order'].lower() == "lo":
+        runShower(cfg, dir, run_with, image_name, logger)
 
     runDelphes(cfg, dir, run_with, image_name, logger)
