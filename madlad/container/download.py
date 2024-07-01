@@ -37,7 +37,6 @@ def get_model(model_names: List|str, model_dict: str = "/app/MG5_aMC/models", bu
 
                 if build_method == "docker":
                     to_write += [
-                        "",
                         "cd %s"%(model_dict),
                         "sudo wget %s"%(lookup_dict[key]),
                         "sudo %s %s"%(extract_command, file_name),
@@ -48,7 +47,6 @@ def get_model(model_names: List|str, model_dict: str = "/app/MG5_aMC/models", bu
                     ]
                 elif build_method == "singularity":
                     to_write += [
-                        "",
                         "mkdir -p /home/atreus/singularity-build/models",
                         "cd /home/atreus/singularity-build/models",
                         "wget %s"%(lookup_dict[key]),
@@ -116,7 +114,7 @@ def get_pdfset(pdf_ids: List|int, pdfsets_dict: Optional[str] = "/usr/local/shar
 
     write_out = ""
     if build_method == "docker":
-        to_write = ["","cd %s"%(pdfsets_dict)].append(pdf_links) if is_int else ["","cd %s"%(pdfsets_dict)]+pdf_links
+        to_write = ["cd %s"%(pdfsets_dict)].append(pdf_links) if is_int else ["cd %s"%(pdfsets_dict)]+pdf_links
 
         for idx, line in enumerate(to_write):
             if idx == 0:
