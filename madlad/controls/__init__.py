@@ -1,9 +1,9 @@
 from .cleanup import cleanUp
 from .exec import makeProcess
 from .delphes import runDelphes
+from .shower import runShower
 from .launch import launchEvtGen
 from .post import runPost
-from .shower import runShower
 
 __all__ = [
     'makeProcess',
