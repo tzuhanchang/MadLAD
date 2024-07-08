@@ -15,7 +15,7 @@ def fastjet_build(version: str) -> Tuple[str,str]:
  && sudo make && sudo make check && sudo make install
 
 """
-    
+
     singularity_command = f"""    cd /home/atreus/singularity-build
     wget {download_link}
     tar -zxf fastjet-{version}.tar.gz
@@ -39,7 +39,7 @@ def delphes_build(version: str) -> Tuple[str,str]:
  && cmake ../Delphes-{version} && sudo make install
 
 """
-    
+
     singularity_command = f"""    cd /home/atreus/singularity-build
     wget {download_link}
     tar -zxf Delphes-{version}.tar.gz && mkdir Delphes_build && cd Delphes_build
@@ -62,7 +62,7 @@ def lhapdf_build(version: str) -> Tuple[str,str]:
  && sudo make && sudo make install
 
 """
-    
+
     singularity_command = f"""    cd /home/atreus/singularity-build
     wget {download_link} -O LHAPDF-{version}.tar.gz
     tar -zxf LHAPDF-{version}.tar.gz && cd LHAPDF-{version}
@@ -77,7 +77,7 @@ def pythia8_build(version: str) -> Tuple[str,str]:
     version_number = version.split('.')
     if len(version_number) != 2:
         raise ValueError("PYTHIA 8 version number provided not found. Please check list of available versions at 'https://pythia.org/releases'.")
-    
+
     release = version_number[-1]
     series = release[0]
 
@@ -98,7 +98,7 @@ def pythia8_build(version: str) -> Tuple[str,str]:
 
 """
     return docker_command, singularity_command
-    
+
 
 def mg5_build(version: Optional[str] = None, external: Optional[str] = None) -> Tuple[str,str]:
     if version is not None:
@@ -138,7 +138,7 @@ def mg5_build(version: Optional[str] = None, external: Optional[str] = None) -> 
     sudo /usr/local/bin/mg5 mg5_exec_card && cd /
 
 """
-    
+
     if external is not None:
         docker_command = f"""RUN sudo mkdir -p /app/MG5_aMC
 COPY {external} /app/MG5_aMC
@@ -152,7 +152,7 @@ RUN cd /app/MG5_aMC \\
  && sudo /usr/local/bin/mg5 mg5_exec_card && cd /
 
 """
-        singularity_command = f"""    sudo mkdir /app && sudo mv /home/atreus/singularity-build/MG5_aMC /app/ && cd /app/MG5_aMC
+        singularity_command = f"""    sudo mkdir /app && sudo mv /home/atreus/MG5_aMC /app/ && cd /app/MG5_aMC
     sudo ln -fs /app/MG5_aMC/bin/mg5_aMC /usr/local/bin/mg5
     sudo sed -i 's/# pythia8_path = .\/HEPTools\/pythia8/pythia8_path = \/usr\/local/' ./input/mg5_configuration.txt
     sudo sed -i 's/# delphes_path = .\/Delphes/delphes_path = \/usr\/local/' ./input/mg5_configuration.txt
@@ -162,7 +162,7 @@ RUN cd /app/MG5_aMC \\
     sudo /usr/local/bin/mg5 mg5_exec_card && cd /
 
 """
-    
+
     if version is None and external is None:
         raise ValueError("Please provide either MadGraph version you want to install or the MadGraph directory you want to use with the container.")
 
