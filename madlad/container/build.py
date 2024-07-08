@@ -79,14 +79,14 @@ def SingularityBuild(config: str):
         settings = yaml.load(f, Loader=yaml.SafeLoader)
 
     external_mg5 = "." in settings['build']['mg5']
-    move = f"{settings['build']['mg5']} /home/atreus/singularity-build/MG5_aMC" if external_mg5 is False else ""
+    move = f"cp -R {settings['build']['mg5']}" + " ${SINGULARITY_ROOTFS}/home/atreus/MG5_aMC" if external_mg5 is False else ""
 
     init = f"""Bootstrap: docker
 From: tzuhanchang/madlad:madlad-base
 
-%files
+%setup
     {move}
-    
+
 %post
     mkdir -p /home/atreus/singularity-build
 """
