@@ -1,0 +1,6 @@
+import model UFO_W4n5
+define p = g u c d s b u~ c~ d~ s~ b~
+define j = g u c d s b u~ c~ d~ s~ b~
+
+generate p p > w+ w- z NP=2 NP^2==2
+output gen/wwz_W4n5_int

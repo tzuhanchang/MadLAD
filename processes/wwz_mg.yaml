@@ -1,0 +1,34 @@
+run:
+  image:       "madlad-custom-patrick"
+  mg5:         "/app/MG5_aMC/bin/mg5_aMC"
+  launch-from: null
+  auto-launch: False
+  shower:      False
+
+gen:
+  block_model:
+    model:          sm
+    # model:          UFO_OE
+    multiparticle:  ["p = g u c d s b u~ c~ d~ s~ b~", "j = g u c d s b u~ c~ d~ s~ b~"]
+    proc:           "p p > w+ w- z"
+    order:          "lo"
+    save_dir:       "gen/wwz_mg"
+
+  block_run:
+    nevents:        100000
+    iseed:          0
+    beamenergy:     6500
+    
+  block_madspin:
+    multiparticle:  ["p = g u c d s b u~ c~ d~ s~ b~", "j = g u c d s b u~ c~ d~ s~ b~"]
+    decays:         ["w+ > l+ vl","w- > l- vl~","z > l+ l-"]
+    bwcut:          15
+    max_weight_ps_point: 400
+    Nevents_for_max_weight: 75
+
+  block_param:
+    param: "param_card.dat"
+
+post: [
+  "echo 'Finished'"
+]

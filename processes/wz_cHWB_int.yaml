@@ -1,0 +1,24 @@
+run:
+  image: "madlad-custom-patrick"
+  mg5: "/app/MG5_aMC/bin/mg5_aMC"
+  launch-from: null
+  auto-launch: False
+  shower:      False
+
+gen:
+  block_model:
+    model:          SMEFTsim_topU3l_MwScheme_UFO-SMlimit_massless_even
+    # model:          UFO_OE
+    multiparticle: ["p = g u c d s b u~ c~ d~ s~ b~","j = g u c d s b u~ c~ d~ s~ b~"]
+    proc: "p p > w+ z NP^2==1"
+    order: "lo"
+    save_dir: "gen/wz_cHWB_int"
+
+  block_run:
+    nevents: 100000
+    iseed: 0
+    beamenergy: 6500
+
+post: [
+    "echo 'Finished'"
+]

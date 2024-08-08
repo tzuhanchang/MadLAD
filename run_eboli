@@ -1,0 +1,22 @@
+#!/bin/bash
+
+cd /mnt
+
+# export PROC_NAME=wwz_np
+export PROC_NAME=wwz_eboli
+# export PROC_NAME=wwz_sm
+export MG5_RUN_DIR=gen/$PROC_NAME
+export MG5_OUT_DIR=${ClusterId}.${ProcId}.output
+export MG5_LOG_DIR=${ClusterId}.${ProcId}.banners
+
+# Initiating
+echo -e "launch $MG5_RUN_DIR" > mg5_exec_card
+
+mkdir -p $MG5_OUT_DIR
+mkdir -p $MG5_LOG_DIR
+
+# seed=$((ProcId * 30000 + 73 * 10))
+
+python3 Generate.py -c processes/$PROC_NAME.json --auto_launch
+
+# cp -r gen/* /home/pdougan/EventGeneration/condor/
