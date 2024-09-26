@@ -7,24 +7,20 @@ run:
 
 gen:
   block_model:
-    model:          sm
+    model:          UFO_WBphi2D2n46
     # model:          UFO_OE
     multiparticle:  ["p = g u c d s b u~ c~ d~ s~ b~", "j = g u c d s b u~ c~ d~ s~ b~"]
-    proc:           "p p > w+ w- z"
+    proc:           "p p > w+ z z NP^2==2"
     order:          "lo"
-    save_dir:       "gen/wwz_sm"
+    save_dir:       "gen/wzz_wbphi2d2n4_int"
 
   block_run:
     nevents:        100000
     iseed:          0
     beamenergy:     6500
-    
-  block_madspin:
-    multiparticle:  ["p = g u c d s b u~ c~ d~ s~ b~", "j = g u c d s b u~ c~ d~ s~ b~"]
-    decays:         ["w+ > e+ ve","w- > mu+ vm~","z > mu+ mu-"]
-    bwcut:          15
-    max_weight_ps_point: 400
-    Nevents_for_max_weight: 75
+
+  block_param:
+    param: "wbphi2d2n4_param_card.dat"
 
 post: [
   "echo 'Finished'"

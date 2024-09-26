@@ -7,15 +7,15 @@ run:
 
 gen:
   block_model:
-    model:          UFO_W4n5
+    model:          UFO_W4n15
     # model:          UFO_OE
     multiparticle:  ["p = g u c d s b u~ c~ d~ s~ b~", "j = g u c d s b u~ c~ d~ s~ b~"]
-    proc:           "p p > w+ w- z NP=2 NP^2==2"
+    proc:           "p p > w+ w- z NP^2==2"
     order:          "lo"
     save_dir:       "gen/wwz_w4n5_int"
 
   block_run:
-    nevents:        1000000
+    nevents:        100000
     iseed:          0
     beamenergy:     6500
 

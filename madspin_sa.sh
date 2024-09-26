@@ -27,9 +27,12 @@ set max_weight_ps_point 400  # number of PS to estimate the maximum for each eve
 define p = g u c d s b u~ c~ d~ s~ b~
 define j = g u c d s b u~ c~ d~ s~ b~
 
-decay w+ > l+ vl
-decay w- > l- vl~
-decay z > l+ l-
+# decay w+ > l+ vl
+# decay w- > l- vl~
+# decay z > l+ l-
+decay w+ > e+ ve
+decay w- > mu+ vm~
+decay z > mu+ mu-
 
 # running the actual code
 launch

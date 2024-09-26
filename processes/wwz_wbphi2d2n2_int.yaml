@@ -7,7 +7,7 @@ run:
 
 gen:
   block_model:
-    model:          UFO_WBphi2D2n1
+    model:          UFO_WBphi2D2n12
     # model:          UFO_OE
     multiparticle:  ["p = g u c d s b u~ c~ d~ s~ b~", "j = g u c d s b u~ c~ d~ s~ b~"]
     proc:           "p p > w+ w- z NP^2==2"

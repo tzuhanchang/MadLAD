@@ -3,25 +3,25 @@ run:
   mg5:         "/app/MG5_aMC/bin/mg5_aMC"
   launch-from: null
   auto-launch: False
-  shower:      False
+  shower:      True
 
 gen:
   block_model:
     model:          sm
-    # model:          UFO_OE
     multiparticle:  ["p = g u c d s b u~ c~ d~ s~ b~", "j = g u c d s b u~ c~ d~ s~ b~"]
-    proc:           "p p > w+ w- z"
+    proc:           "p p > w+ z"
     order:          "lo"
-    save_dir:       "gen/wwz_sm"
+    save_dir:       "gen/wz_sm"
 
   block_run:
-    nevents:        100000
+    nevents:        1000
     iseed:          0
     beamenergy:     6500
+    parton_shower:  "PYTHIA8"
     
   block_madspin:
     multiparticle:  ["p = g u c d s b u~ c~ d~ s~ b~", "j = g u c d s b u~ c~ d~ s~ b~"]
-    decays:         ["w+ > e+ ve","w- > mu+ vm~","z > mu+ mu-"]
+    decays:         ["w+ > l+ vl","z > l+ l-"]
     bwcut:          15
     max_weight_ps_point: 400
     Nevents_for_max_weight: 75
