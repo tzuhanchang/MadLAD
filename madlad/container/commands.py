@@ -86,14 +86,14 @@ def pythia8_build(version: str) -> Tuple[str,str]:
     docker_command = f"""RUN cd /tmp \\
  && wget {download_link} \\
  && tar -xf pythia8{release}.tar && cd pythia8{release} \\
- && ./configure --prefix=/usr/local --with-hepmc2=/usr/local --with-hepmc2-include=/usr/local/include --with-lhapdf6=/usr/local --with-lhapdf6-plugin=LHAPDF6.h \\
+ && ./configure --prefix=/usr/local --with-hepmc2=/usr/local --with-hepmc2-include=/usr/local/include --with-lhapdf6=/usr/local --with-lhapdf6-plugin=LHAPDF6.h --with-gzip=/usr\\
  && sudo make && sudo make install
 
 """
     singularity_command = f"""    cd /home/atreus/singularity-build
     wget {download_link}
     tar -xf pythia8{release}.tar && cd pythia8{release}
-    ./configure --prefix=/usr/local --with-hepmc2=/usr/local --with-hepmc2-include=/usr/local/include --with-lhapdf6=/usr/local --with-lhapdf6-plugin=LHAPDF6.h
+    ./configure --prefix=/usr/local --with-hepmc2=/usr/local --with-hepmc2-include=/usr/local/include --with-lhapdf6=/usr/local --with-lhapdf6-plugin=LHAPDF6.h --with-gzip=/usr
     sudo make && sudo make install
 
 """
