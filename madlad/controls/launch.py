@@ -3,7 +3,7 @@ import os
 import subprocess
 from pathlib import Path
 from madlad.container import checkImage
-from madlad.controls import runDelphes, runShower
+from madlad.controls import runDelphes
 
 from omegaconf import DictConfig
 
@@ -22,7 +22,10 @@ def launchEvtGen(cfg : DictConfig, dir: str, logger) -> None:
             ecard.write(f"launch {dir} -i\ngenerate_events -p")
     else:
         logger.info('Writing Gen card.')
-        ecard.write(f"launch {dir}")
+        if cfg['gen']['block_model']['order'].lower() == "lo":
+            ecard.write(f"launch {dir} \nshower=Pythia8")
+        else:
+            ecard.write(f"launch {dir}")
     ecard.close()
 
     if run_with == "docker":
@@ -45,8 +48,5 @@ def launchEvtGen(cfg : DictConfig, dir: str, logger) -> None:
                 f"mg5_exec_card-{os.path.basename(dir)}"
             ]
         )
-
-    if cfg['run']['shower'] and cfg['gen']['block_model']['order'].lower() == "lo":
-        runShower(cfg, dir, run_with, image_name, logger)
 
     runDelphes(cfg, dir, run_with, image_name, logger)
