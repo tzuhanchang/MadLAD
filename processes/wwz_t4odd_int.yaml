@@ -7,7 +7,7 @@ run:
 
 gen:
   block_model:
-    model:          gdurieux_aqgc_main_aqgc_ufo-FT4
+    model:          gdurieux_aqgc_main_aqgc_ufo-FT4odd
     # model:          UFO_OE
     multiparticle:  ["p = g u c d s b u~ c~ d~ s~ b~", "j = g u c d s b u~ c~ d~ s~ b~"]
     proc:           "p p > w+ w- z NP^2==1"

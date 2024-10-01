@@ -31,7 +31,7 @@ define j = g u c d s b u~ c~ d~ s~ b~
 # decay w- > l- vl~
 # decay z > l+ l-
 decay w+ > e+ ve
-decay w- > mu+ vm~
+decay w- > mu- vm~
 decay z > mu+ mu-
 
 # running the actual code
