@@ -1,0 +1,63 @@
+run:
+  image:       "madlad-custom"
+  mg5:         "/app/MG5_aMC/bin/mg5_aMC"
+  launch-from: null
+  auto-launch: False
+  shower:      True
+
+gen:
+  block_model:
+    model:          loop_sm-no_b_mass
+    multiparticle:  ["p = g u c d s u~ c~ d~ s~ b b~", "j = g u c d s u~ c~ d~ s~ b b~"]
+    proc:           "p p > t t~ h [QCD]"
+    order:          "nlo"
+    save_dir:       "Output"
+
+  block_run:
+    nevents:        1000
+    nevt_job:       1000
+    iseed:          0
+    beamenergy:     6500
+    pdlabel:        "lhapdf"
+    lhaid:          260000
+    parton_shower:  "PYTHIA8"
+    maxjetflavor:   5
+    reweight_scale: ".true."
+    reweight_PDF:   ".true."
+    PDF_set_min:    260001
+    PDF_set_max:    260100
+    bwcutoff:       50
+
+  block_madspin:
+    multiparticle:  ["p = g u c d s u~ c~ d~ s~ b b~", "j = g u c d s u~ c~ d~ s~ b b~"]
+    decays:         ["t > w+ b, w+ > j j", "t~ > w- b~, w- > j j"]
+    max_weight_ps_point: 1000
+    Nevents_for_max_weight: 250
+
+  block_param:
+    param: "aMcAtNlo_param_card_loop_sm-no_b_mass.dat"
+
+  block_shower:
+    settings:
+      nevents:      -1
+    decays: [
+        'DM_1 = 25:onMode = off',
+        'DM_2 = 25:oneChannel = 1 0.5770   100 5 -5',
+        'DM_3 = 25:addChannel = 1 0.0291   100 4 -4',
+        'DM_4 = 25:addChannel = 1 0.000246 100 3 -3',
+        'DM_5 = 25:addChannel = 1 0.00000  100 6 -6',
+        'DM_6 = 25:addChannel = 1 0.000219 100 13 -13',
+        'DM_7 = 25:addChannel = 1 0.0632   100 15 -15',
+        'DM_8 = 25:addChannel = 1 0.0857   100 21 21',
+        'DM_9 = 25:addChannel = 1 0.00228  100 22 22',
+        'DM_10 = 25:addChannel = 1 0.00154  100 22 23',
+        'DM_11 = 25:addChannel = 1 0.0264   100 23 23',
+        'DM_12 = 25:addChannel = 1 0.2150   100 24 -24'
+    ]
+
+  block_delphes:
+    delphes_card: "ATLAS_sim_FASTJET.tcl"
+
+post: [
+  "echo 'Finished'"
+]
