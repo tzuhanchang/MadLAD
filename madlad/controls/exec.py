@@ -1,11 +1,10 @@
 import os
 
-from shutil import which
 import subprocess
 from pathlib import Path
 from madlad.container import checkImage
 
-from madlad.parameters import edit_madspin, edit_run, edit_scales, copy_param_card, make_process
+from madlad.parameters import edit_madspin, edit_run, edit_scales, copy_param_card, make_process, edit_shower
 from omegaconf import DictConfig
 
 
@@ -48,6 +47,10 @@ def makeProcess(cfg : DictConfig, logger) -> None:
     if 'block_madspin' in list(cfg['gen'].keys()):
         logger.info('Editing MG5 MadSpin card.')
         edit_madspin(cfg)
+
+    if 'block_shower' in list(cfg['gen'].keys()):
+        logger.info('Editing MG5 shower card.')
+        edit_shower(cfg)
 
     if 'block_param' in list(cfg['gen'].keys()):
         logger.info('Copying parameter card.')
