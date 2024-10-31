@@ -11,11 +11,11 @@ gen:
     multiparticle:  ["p = g u c d s b u~ c~ d~ s~ b~", "j = g u c d s b u~ c~ d~ s~ b~"]
     proc:           "p p > w+ w- z"
     order:          "lo"
-    save_dir:       "gen/wwz_sm"
+    save_dir:       "gen/wwz_sm_million"
 
   block_run:
-    nevents:        100000
-    iseed:          0
+    nevents:        1000000
+    iseed:          2
     beamenergy:     6500
     
   block_madspin:

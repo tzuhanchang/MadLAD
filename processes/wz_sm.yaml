@@ -8,10 +8,11 @@ run:
 gen:
   block_model:
     model:          sm
+    # model:          UFO_OE
     multiparticle:  ["p = g u c d s b u~ c~ d~ s~ b~", "j = g u c d s b u~ c~ d~ s~ b~"]
-    proc:           "p p > w+ w- z"
+    proc:           "p p > w+ z j j"
     order:          "lo"
-    save_dir:       "gen/wwz_sm"
+    save_dir:       "gen/wz_sm"
 
   block_run:
     nevents:        100000

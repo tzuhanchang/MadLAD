@@ -7,12 +7,12 @@ run:
 
 gen:
   block_model:
-    model:          gdurieux_aqgc_main_aqgc_ufo-FT0
+    model:          gdurieux_aqgc_main_aqgc_ufo-FT2odd
     # model:          UFO_OE
     multiparticle:  ["p = g u c d s b u~ c~ d~ s~ b~", "j = g u c d s b u~ c~ d~ s~ b~"]
     proc:           "p p > w+ w- z NP^2==2"
     order:          "lo"
-    save_dir:       "gen/wwz_t0_quad"
+    save_dir:       "gen/wwz_t2odd_quad"
 
   block_run:
     nevents:        100000
