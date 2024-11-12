@@ -25,6 +25,10 @@ cd MadLAD
 # cd /mnt
 
 export PROC_NAME=$1
+export DIR_NAME=processes/$2
+# export YAML_NAME=$PROC_NAME
+# export YAML_NAME=$DIR_NAME/$PROC_NAME.yaml
+# echo $YAML_NAME
 export MG5_RUN_DIR=gen/$PROC_NAME
 export MG5_OUT_DIR=${ClusterId}.${ProcId}.output
 export MG5_LOG_DIR=${ClusterId}.${ProcId}.banners
@@ -37,20 +41,29 @@ mkdir -p $MG5_LOG_DIR
 
 # seed=$((ProcId * 30000 + 73 * 10))
 
-python -m madlad.generate --config-name=$PROC_NAME.yaml run.auto-launch=True
+python -m madlad.generate --config-dir=$DIR_NAME --config-name=$PROC_NAME.yaml run.auto-launch=True
 
 #Madspin doesn't run with squared couplings, here is hack to trick Madspin by removing the NP coupling order in the process
 lhetar_path=$MG5_RUN_DIR/Events/run_01/unweighted_events.lhe.gz
 lhe_path=$MG5_RUN_DIR/Events/run_01/unweighted_events.lhe
 proccard_path=$MG5_RUN_DIR/Cards/proc_card_mg5.dat
 
+# gunzip $lhetar_path
+# sed -i -r 's/NP=+[0-9]//g' $lhe_path
+# sed -i -r 's/NP\^2=+[0-9]//g' $lhe_path
+# sed -i -r 's/add process.*//g' $lhe_path
+# gzip $lhe_path
+# sed -i -r 's/NP=+[0-9]//g' $proccard_path
+# sed -i -r 's/NP\^2=+[0-9]//g' $proccard_path
+# sed -i -r 's/add process.*//g' $proccard_path
+
 gunzip $lhetar_path
-sed -i -r 's/NP=+[0-9]//g' $lhe_path
-sed -i -r 's/NP\^2=+[0-9]//g' $lhe_path
+sed -i -r 's/NP(BIS)?=+[0-9]//g' $lhe_path
+sed -i -r 's/NP(BIS)?\^2=+[0-9]//g' $lhe_path
 sed -i -r 's/add process.*//g' $lhe_path
 gzip $lhe_path
-sed -i -r 's/NP=+[0-9]//g' $proccard_path
-sed -i -r 's/NP\^2=+[0-9]//g' $proccard_path
+sed -i -r 's/NP(BIS)?=+[0-9]//g' $proccard_path
+sed -i -r 's/NP(BIS)?\^2=+[0-9]//g' $proccard_path
 sed -i -r 's/add process.*//g' $proccard_path
 
 # echo -e "launch madspin_sa.sh $PROC_NAME" > madspin_exec_card 

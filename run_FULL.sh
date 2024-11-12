@@ -37,4 +37,5 @@ mkdir -p $MG5_LOG_DIR
 
 # seed=$((ProcId * 30000 + 73 * 10))
 
-python -m madlad.generate --config-name=$PROC_NAME.yaml run.auto-launch=True
+# python -m madlad.generate --config-name=$PROC_NAME.yaml run.auto-launch=True
+python -m madlad.generate --config-dir=$DIR_NAME --config-name=$PROC_NAME.yaml run.auto-launch=True

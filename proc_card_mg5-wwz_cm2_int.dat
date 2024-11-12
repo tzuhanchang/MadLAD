@@ -1,0 +1,6 @@
+import model gdurieux_aqgc_main_aqgc_ufo-CM2
+define p = g u c d s b u~ c~ d~ s~ b~
+define j = g u c d s b u~ c~ d~ s~ b~
+
+generate p p > w+ w- z NPBIS^2==1
+output gen/wwz_cm2_int
