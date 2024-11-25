@@ -4,7 +4,7 @@ image:
 build:
   mg5:     "/home/pdougan/EventGeneration/MG5_aMC_v3_5_4"
   pythia:  "8.301"
-  # lhapdf:  "6.5.4"
+  lhapdf:  "6.5.0"
   fastjet: "3.4.0"
   delphes: "3.5.0"
 

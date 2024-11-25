@@ -25,6 +25,7 @@ cd MadLAD
 # cd /mnt
 
 export PROC_NAME=$1
+export DIR_NAME=processes/$2
 export MG5_RUN_DIR=gen/$PROC_NAME
 export MG5_OUT_DIR=${ClusterId}.${ProcId}.output
 export MG5_LOG_DIR=${ClusterId}.${ProcId}.banners

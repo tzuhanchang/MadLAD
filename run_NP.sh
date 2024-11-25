@@ -69,7 +69,10 @@ sed -i -r 's/add process.*//g' $proccard_path
 # echo -e "launch madspin_sa.sh $PROC_NAME" > madspin_exec_card 
 
 sed -i "s#gen/gen_name/Events/run_01/unweighted_events.lhe.gz#gen/${PROC_NAME}/Events/run_01/unweighted_events.lhe.gz#g" madspin_sa.sh
+sed -i "s#gen/gen_name/Events/run_01_decayed_1/#gen/${PROC_NAME}/Events/run_01_decayed_1/#g" madspin_sa.sh
 
 singularity exec --no-home --bind $PWD:/mnt ../madlad-custom-patrick.sif bash /mnt/run_madspin.sh
+
+mv ${MG5_RUN_DIR}/Events/run_01/unweighted_events_decayed.lhe.gz ${MG5_RUN_DIR}/Events/run_01_decayed_1/unweighted_events.lhe.gz
 
 # cp -r gen/* /home/pdougan/EventGeneration/condor/

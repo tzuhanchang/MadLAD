@@ -1,0 +1,16 @@
+run:
+  image: madlad-custom-patrick
+  mg5: /app/MG5_aMC/bin/mg5_aMC
+  launch-from: null
+  auto-launch: true
+  shower: true
+gen:
+  block_model:
+    order: lo
+    save_dir: wwz_sm/gen
+  block_run: null
+  block_madspin: null
+  block_delphes:
+    delphes_card: delphes_card_ATLAS_default.tcl
+post:
+- echo 'Finished'
