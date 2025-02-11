@@ -46,9 +46,8 @@ def makeProcess(cfg : DictConfig, logger) -> None:
         edit_run(cfg)
     
     if 'block_madspin' in list(cfg['gen'].keys()):
-        if 'run_standalone' in list(cfg['gen']['block_madspin'].keys()):
-            if cfg['gen']['block_madspin']['run_standalone'] == True:
-                logger.info('Will run madspin standalone later.')
+        if 'run_standalone' in list(cfg['gen']['block_madspin'].keys()) and cfg['gen']['block_madspin']['run_standalone'] == True:
+            logger.info('Will run madspin standalone later.')
         else:
             logger.info('Editing MG5 MadSpin card.')
             edit_madspin(cfg)

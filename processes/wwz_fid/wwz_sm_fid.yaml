@@ -3,15 +3,15 @@ run:
   mg5:         "/app/MG5_aMC/bin/mg5_aMC"
   launch-from: null
   auto-launch: False
-  shower:      False
+  shower:      True
 
 gen:
   block_model:
     model:          sm
     multiparticle:  ["p = g u c d s b u~ c~ d~ s~ b~", "j = g u c d s b u~ c~ d~ s~ b~"]
-    proc:           "p p > w+ w- z"
+    proc:           "p p > w+ w- z @0 \n add process p p > w+ w- z j @1"
     order:          "lo"
-    save_dir:       "wwz_sm_test01/gen"
+    save_dir:       "wwz_sm_jetmerging_test/gen"
 
   block_run:
     # nevents:        100000
@@ -20,6 +20,7 @@ gen:
     beamenergy:     6500
     pdlabel:        "lhapdf"
     lhaid:          303400
+    ickkw:          1
     # parton_shower:  "PYTHIA8"
     # maxjetflavor:   5
     # reweight_scale: ".true."
@@ -33,7 +34,7 @@ gen:
     # req_acc:        0.001
     
   block_madspin:
-    run_standalone: True
+    run_standalone: False
     multiparticle:  ["p = g u c d s b u~ c~ d~ s~ b~", "j = g u c d s b u~ c~ d~ s~ b~"]
     decays:         ["w+ > e+ ve","w- > mu- vm~","z > mu+ mu-"]
     bwcut:          15
@@ -41,7 +42,7 @@ gen:
     Nevents_for_max_weight: 75
       
   block_pythia:
-    post_madspin:   True
+    post_madspin:   False
 
   block_delphes:
     delphes_card: "delphes_card_ATLAS_default.tcl"
