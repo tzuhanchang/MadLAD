@@ -1,6 +1,0 @@
-import model UFO
-define p = g u c d s b u~ c~ d~ s~ b~
-define j = g u c d s b u~ c~ d~ s~ b~
-
-generate p p > w+ w- z NP=2
-output gen/wwz_np
