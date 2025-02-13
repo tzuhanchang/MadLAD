@@ -22,7 +22,7 @@ RUN apt install -y gfortran libpcre3-dev \
     libgl2ps-dev \
     liblzma-dev libxxhash-dev liblz4-dev libzstd-dev
 
-RUN apt install -y nano vim rsync wget unzip ghostscript \
+RUN apt install -y nano vim rsync wget unzip ghostscript bc \
     python3-pip python3-six
 
 # Link Python
