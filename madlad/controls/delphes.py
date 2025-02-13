@@ -13,7 +13,15 @@ def runDelphes(cfg : DictConfig, dir: str, run_with: str, image_name: str, logge
     if 'block_delphes' in list(cfg['gen'].keys()):
 
         logger.info("Running detector simulation with Delphes.")
-        evt_dir = 'run_01_decayed_1' if 'block_madspin' in list(cfg['gen'].keys()) else 'run_01'
+        if 'run_standalone' in list(cfg['gen']['block_madspin'].keys()):
+            if cfg['gen']['block_madspin']['run_standalone'] == True:
+                evt_dir = 'run_01_decayed_2'
+            else:
+                evt_dir = 'run_01_decayed_1'
+        elif 'block_madspin' in list(cfg['gen'].keys()):
+            evt_dir = 'run_01_decayed_1'
+        else:
+            evt_dir = 'run_01'
 
         shower = True if 'shower' in list(cfg['run'].keys()) and cfg['run']['shower'] is True else False
         file_name = glob.glob(f'{dir}/Events/{evt_dir}/*.hepmc.gz')[0] if shower else glob.glob(f'{dir}/Events/{evt_dir}/*.lhe.gz')[0]

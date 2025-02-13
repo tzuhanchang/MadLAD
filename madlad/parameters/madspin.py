@@ -19,6 +19,19 @@ def edit_madspin(cfg: DictConfig) -> None:
     madspin_card_loc = os.path.join(save_dir, "Cards", "madspin_card.dat")
     mscard = open(madspin_card_loc,'w')
 
+    if 'run_standalone' in list(cfg['gen']['block_madspin'].keys()):
+        if cfg['gen']['block_madspin']['run_standalone'] == True:
+            try:
+                import_path = "import %s/Events/run_01/unweighted_events.lhe.gz"%(str(cfg['gen']['block_model']['save_dir']))
+                ms_path = "set ms_dir %s/Events/run_01_decayed_1/"%(str(cfg['gen']['block_model']['save_dir']))
+            except KeyError:
+                import_path = "# import /Events/run_01/unweighted_events.lhe.gz"
+                ms_path = "# set ms_dir /Events/run_01_decayed_1/"
+                raise ValueError("There is an issue with the import path in the MadSpin card.")
+    else:
+        import_path = "# import /Events/run_01/unweighted_events.lhe.gz"
+        ms_path = "# set ms_dir /Events/run_01_decayed_1/"
+
     try:
         seed = "set seed %s"%(str(settings['randomSeed']))
     except KeyError:
@@ -75,6 +88,9 @@ def edit_madspin(cfg: DictConfig) -> None:
 #Some options (uncomment to apply)
 #
 %s
+
+%s
+%s
 %s
 %s
 %s
@@ -85,7 +101,9 @@ def edit_madspin(cfg: DictConfig) -> None:
 %s
 # running the actual code
 launch
-"""%(seed,
+"""%(import_path,
+     ms_path,
+     seed,
      Nevents_for_max_weight,
      BW_cut,
      spinmode,

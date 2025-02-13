@@ -15,7 +15,7 @@ gen:
 
   block_run:
     nevents:        1000
-    nevt_job:       1000
+    nevt_job:       1000 #Only for NLO
     iseed:          0
     beamenergy:     6500
     pdlabel:        "lhapdf"

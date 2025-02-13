@@ -171,3 +171,5 @@ MG5_debug
 mg5_exec_card
 nsqso_born.inc
 post-commands
+
+*.sif
