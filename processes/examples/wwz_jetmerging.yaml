@@ -1,0 +1,54 @@
+run:
+  image:       "madlad-custom-patrick"
+  mg5:         "/app/MG5_aMC/bin/mg5_aMC"
+  launch-from: null
+  auto-launch: False
+  shower:      True #Run automatic pythia showering, to use pythia module for standalone showering only this should be set to False
+
+gen:
+  block_model:
+    model:          sm
+    multiparticle:  ["p = g u c d s b u~ c~ d~ s~ b~", "j = g u c d s b u~ c~ d~ s~ b~"]
+    # multiparticle:  ["p = g u c d s b u~ c~ d~ s~ b~", "j = g u c d s b u~ c~ d~ s~ b~", "l+ = e+ mu+", "vl = ve vm", "l- = e- mu-", "vl~ =  vm~ ve~"]
+    proc:           "p p > w+ w- z @0 \n add process p p > w+ w- z j @1"
+    order:          "lo"
+    save_dir:       "wwz_sm_jetmerging_test/gen"
+
+  block_run:
+    # nevents:        100000
+    nevents:        1000
+    iseed:          0
+    beamenergy:     6500
+    pdlabel:        "lhapdf"
+    lhaid:          303400
+    ickkw:          1 #To run MLM jet merging
+    # parton_shower:  "PYTHIA8"
+    # maxjetflavor:   5
+    # reweight_scale: ".true."
+    # reweight_PDF:   ".true."
+    # PDF_set_min:    260001
+    # PDF_set_max:    260100
+    # dynamical_scale_choice: 10
+    # jetalgo:        -1
+    # jetradius:      0.4
+    # ptj:            0.1
+    # req_acc:        0.001
+    
+  block_madspin:
+    # run_standalone: True 
+    multiparticle:  ["p = g u c d s b u~ c~ d~ s~ b~", "j = g u c d s b u~ c~ d~ s~ b~"]
+    decays:         ["w+ > l+ vl","w- > l- vl~","z > l+ l-"]
+    # decays:         ["w+ > l+ vl @1", "w- > j j @1", "z > l+ l- @1", "w+ > j j @2", "w- > l- vl~ @2", "z > l+ l- @2"] #Requires MG 3.5.0 (allows for things like "semi-leptonic" decays where the w+ or the w- could decay hadronically but not at the same time)
+    bwcut:          15
+    max_weight_ps_point: 400
+    Nevents_for_max_weight: 75
+      
+  block_pythia:
+    post_madspin:   False
+
+  block_delphes:
+    delphes_card: "delphes_card_ATLAS_default.tcl"
+
+post: [
+  "echo 'Finished'"
+]

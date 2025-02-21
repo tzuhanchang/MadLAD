@@ -3,7 +3,7 @@ import os
 import subprocess
 from pathlib import Path
 from madlad.container import checkImage
-from madlad.controls import runDelphes
+from madlad.controls import runDelphes, runMadspinSA, runPythia
 
 from omegaconf import DictConfig
 
@@ -49,4 +49,6 @@ def launchEvtGen(cfg : DictConfig, dir: str, logger) -> None:
             ]
         )
 
+    runMadspinSA(cfg, dir, run_with, image_name, logger)
+    runPythia(cfg, dir, run_with, image_name, logger)
     runDelphes(cfg, dir, run_with, image_name, logger)
