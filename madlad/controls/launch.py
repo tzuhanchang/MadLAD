@@ -32,8 +32,8 @@ def launchEvtGen(cfg : DictConfig, dir: str, logger) -> None:
         logger.info('Running MG5 event generation using Docker.')
         subprocess.run(
             [
-                "docker", "run", "--rm", "-it", "-w", "/home/atreus/data",
-                "-v", f"{Path().absolute()}:/home/atreus/data",
+                "docker", "run", "--rm", "-it", "-w", "/root",
+                "-v", f"{Path().absolute()}:/root",
                 image_name, cfg['run']['mg5'],
                 f"mg5_exec_card-{os.path.basename(dir)}"
             ]

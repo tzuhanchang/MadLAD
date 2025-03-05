@@ -1,71 +1,48 @@
-FROM centos:centos7
+FROM ubuntu:focal
 
 # metainformation
-LABEL org.opencontainers.image.version = "3.0.0"
-LABEL org.opencontainers.image.authors = "Zihan Zhang"
-LABEL org.opencontainers.image.source = "https://zhangzi.web.cern.ch"
-LABEL org.opencontainers.image.base.name="docker.io/library/centos:centos7"
+LABEL org.opencontainers.image.version="4.0.0"
+LABEL org.opencontainers.image.authors="Zihan Zhang"
+LABEL org.opencontainers.image.source="https://zhangzi.web.cern.ch"
 
-RUN yum update -y && yum groupinstall "Development Tools" -y \
- && yum install -y zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel \
-    readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel libXpm-devel \
-    libXext-devel wget which ghostscript
+ARG DEBIAN_FRONTEND=noninteractive
+ENV LD_LIBRARY_PATH=/usr/local/lib:/usr/lib:/lib
 
-RUN yum install -y epel-release redhat-lsb-core gcc-gfortran pcre-devel \
-    mesa-libGL-devel mesa-libGLU-devel glew-devel ftgl-devel mysql-devel \
-    fftw-devel cfitsio-devel graphviz-devel libuuid-devel \
-    avahi-compat-libdns_sd-devel openldap-devel \
-    libxml2-devel gsl-devel readline-devel qt5-qtwebengine-devel \
-    R-devel R-Rcpp-devel R-RInside-devel
+RUN apt update -y && apt upgrade -y
 
-RUN cd /tmp \
- && wget https://github.com/Kitware/CMake/releases/download/v3.28.3/cmake-3.28.3.tar.gz \
- && tar -zxf cmake-3.28.3.tar.gz && cd cmake-3.28.3 \
- && ./bootstrap && make && make install 
+RUN apt install -y binutils cmake dpkg-dev g++ gcc libssl-dev git libx11-dev \
+    libxext-dev libxft-dev libxpm-dev python3 libtbb-dev libgif-dev
+
+RUN apt install -y gfortran libpcre3-dev \
+    libglu1-mesa-dev libglew-dev libftgl-dev \
+    libfftw3-dev libcfitsio-dev libgraphviz-dev \
+    libavahi-compat-libdnssd-dev libldap2-dev \
+    python3-dev python3-numpy libxml2-dev libkrb5-dev \
+    libgsl-dev qtwebengine5-dev nlohmann-json3-dev libmysqlclient-dev \
+    libgl2ps-dev \
+    liblzma-dev libxxhash-dev liblz4-dev libzstd-dev
+
+RUN apt install -y nano vim rsync wget unzip ghostscript bc \
+    python3-pip python3-six
+
+# Link Python
+RUN ln -fs /usr/bin/python3 /usr/bin/python
 
 # Install ROOT
 RUN cd /tmp \
- && wget https://root.cern/download/root_v6.24.08.source.tar.gz \
- && tar -zxf root_v6.24.08.source.tar.gz && mkdir root_build && cd root_build \
- && cmake ../root-6.24.08 && cmake --build . -- install
-
-# Install Python=3.10
-RUN cd /tmp \
- && wget https://www.python.org/ftp/python/3.9.17/Python-3.9.17.tgz \
- && tar -zxf Python-3.9.17.tgz && cd Python-3.9.17 \
- && ./configure --enable-optimizations && make altinstall \
- && ln -fs /usr/local/bin/python3.9 /usr/bin/python3 \
- && ln -fs /usr/local/bin/pip3.9 /usr/bin/pip3 \
- && ln -fs /usr/local/bin/python3.9 /usr/bin/python \
- && ln -fs /usr/local/bin/pip3.9 /usr/bin/pip
+ && git clone --branch latest-stable --depth=1 https://github.com/root-project/root.git root_src \
+ && mkdir root_build && cd root_build \
+ && cmake ../root_src && cmake --build . -- install
 
 # Install HepMC2
 RUN cd /tmp \
- && wget http://hepmc.web.cern.ch/hepmc/releases/hepmc2.06.09.tgz \
- && tar -zxf hepmc2.06.09.tgz && cd hepmc2.06.09 \
- && ./configure --prefix=/usr/local --with-momentum=GEV --with-length=MM --build=aarch64-unknown-linux-gnu \
- && make && make check && make install
+ && wget https://hepmc.web.cern.ch/hepmc/releases/HepMC-2.06.11.tar.gz \
+ && tar -zxf HepMC-2.06.11.tar.gz \
+ && mkdir HepMC_build && cd HepMC_build \
+ && cmake -DCMAKE_INSTALL_PREFIX=/usr/local -Dmomentum=GEV -Dlength=MM ../HepMC-2.06.11 \
+ && make && make test && make install
 
-RUN pip install --upgrade setuptools \
- && pip install six \
- && ln -fs /usr/bin/python2.7 /usr/bin/python \
- && ln -fs /usr/bin/pip2.7 /usr/bin/pip
-
+# Clean up
 RUN rm -rf /tmp/*
 
-RUN yum install sudo -y \
- && sudo localedef -c -f UTF-8 -i en_US en_US.UTF-8
-
-RUN useradd atreus \
- && usermod -aG wheel atreus \
- && echo "%wheel  ALL=(ALL)       NOPASSWD: ALL" | tee -a /etc/sudoers 
-
-RUN ln -fs /usr/local/bin/python3.9 /usr/bin/python
-
-USER atreus
-
-ENV HOME=/home/atreus
-RUN chmod 777 /home/atreus \
- && ln -fs /mnt /home/atreus/data
-
-WORKDIR /home/atreus
+USER root

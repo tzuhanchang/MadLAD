@@ -10,11 +10,10 @@ def DockerBuild(config: str):
     with open(config) as f:
         settings = yaml.load(f, Loader=yaml.SafeLoader)
 
-    init = """FROM tzuhanchang/madlad:madlad-base
+    init = """FROM tzuhanchang/madlad:latest
 
     # metainformation
-    LABEL org.opencontainers.image.base.name="docker.io/library/tzuhanchang/madlad:madlad-base"
-
+    LABEL org.opencontainers.image.base.name="docker.io/library/tzuhanchang/madlad:latest"
     """
 
     with open("Dockerfile", "w") as text_file:
@@ -82,7 +81,7 @@ def SingularityBuild(config: str):
     move = f"cp -R {settings['build']['mg5']}" + " ${SINGULARITY_ROOTFS}/home/atreus/MG5_aMC" if external_mg5 is False else ""
 
     init = f"""Bootstrap: docker
-From: tzuhanchang/madlad:madlad-base
+From: tzuhanchang/madlad:latest
 
 %setup
     {move}
@@ -139,7 +138,7 @@ From: tzuhanchang/madlad:madlad-base
             warnings.warn("No optional models provided, none will be downloaded.")
             pass
 
-        text_file.write("    sudo rm -rf /home/atreus/singularity-build")
+        text_file.write("    rm -rf /home/atreus/singularity-build")
 
     try:
         image_name = settings['image']['name']
