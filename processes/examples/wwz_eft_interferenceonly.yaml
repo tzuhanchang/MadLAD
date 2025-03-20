@@ -1,0 +1,48 @@
+# This file will demonstrate how to use MadLad to generate EFT events with a pure NP interference or quadratic term and decay them in Madspin.
+# This has traditionally required a hack to remove evidence of the NP^==2 and such from cards from the ME generation before Madspin sees it
+# As a result, MG has to be stopped after ME generation and then Madspin and Pythia ran Standalone (SA). This card is an example of doing so. 
+
+run:
+  image:       "madlad-custom-patrick"
+  mg5:         "/app/MG5_aMC/bin/mg5_aMC" #Local Madgraph but can be autoinstalled 
+  launch-from: null
+  auto-launch: False
+  shower:      False #Normally on but run pythia standalone set this to False and use block_pythia as shown below
+
+gen:
+  block_model:
+    model:          gdurieux_aqgc_main_aqgc_ufo-CM2 #I am using a restriction card to set Wilson coefficients but could use param card as in commented out block below
+    multiparticle:  ["p = g u c d s b u~ c~ d~ s~ b~", "j = g u c d s b u~ c~ d~ s~ b~"]
+    proc:           "p p > w+ w- z NPBIS^2==2" #NPBIS is unqiue to this model and is the same as NP normally
+    order:          "lo"
+    save_dir:       "wwz_cm2_quad/gen"
+
+  block_run:
+    nevents:        10000
+    # nevents:        100000
+    iseed:          0
+    beamenergy:     6500
+    pdlabel:        "lhapdf"
+    lhaid:          303400
+    
+  block_madspin:
+    run_standalone: True # This runs the remove NP hack and prevents Madspin from running on the fly in MG
+    multiparticle:  ["p = g u c d s b u~ c~ d~ s~ b~", "j = g u c d s b u~ c~ d~ s~ b~"]
+    decays:         ["w+ > e+ ve","w- > mu- vm~","z > mu+ mu-"]
+    bwcut:          15
+    max_weight_ps_point: 400
+    Nevents_for_max_weight: 75
+      
+  block_pythia:
+    post_madspin:   True # This runs Pythia Standalone after Madspin Standalone, make sure shower is False at top of script
+
+  block_delphes:
+    delphes_card: "delphes_card_ATLAS_default.tcl"
+
+
+  # block_param:
+  #   param: "t4odd_gdurieuxaqgc_param_card.dat"
+
+post: [
+  "echo 'Finished'"
+]

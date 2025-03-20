@@ -9,6 +9,9 @@
 Contributions to this project are warmly welcomed. If you are interested in contributing, please submit a pull request with your implemented new features or fixed bugs.
 
 - [Quick Start](#quick-start)
+    - [Build your own containers](#build-your-own-containers)
+    - [Generate](#generate)
+    - [Reference](#reference)
 
 ## Quick Start
 
@@ -23,7 +26,7 @@ Specifying software version you need in the build configuration file `config_bui
 #### Generate
 If you want to generate events with one of our provided processes, run
 ```
-python -m madlad.generate --config-name=ttbar-allhad.yaml
+python -m madlad.generate (--config-dir=processes/examples) --config-name=ttbar-allhad.yaml 
 ```
 This will only produce a production directory, if you want to automatically launch the Matrix Element (ME) or Parton Shower (PS) simulation, use the option `run.auto-launch=True`. You can also define your own processes and save them to `processes` directory.
 
