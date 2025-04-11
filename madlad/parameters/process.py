@@ -12,6 +12,11 @@ def make_process(cfg : DictConfig) -> None:
     save_dir = cfg['gen']['block_model']['save_dir']
     settings = cfg['gen']['block_model']
 
+    run_settings = ""
+    if 'block_settings' in cfg['gen'].keys():
+        for name, val in cfg['gen']['block_settings'].items():
+            run_settings += f"set {name} {val}"
+
     try:
         model = "import model " + settings['model']
     except KeyError:
@@ -35,7 +40,9 @@ def make_process(cfg : DictConfig) -> None:
 %s
 %s
 %s
+%s
 """%(
+    run_settings,
     model,
     multiparticle,
     proc,
