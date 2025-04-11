@@ -14,6 +14,9 @@ def launchEvtGen(cfg : DictConfig, dir: str, logger) -> None:
     image_name, run_with = checkImage(cfg, logger)
 
     ecard = open(f"mg5_exec_card-{os.path.basename(dir)}","w")
+    if 'block_settings' in cfg['gen'].keys():
+        for name, val in cfg['gen']['block_settings'].items():
+            ecard.write(f"set {name} {val}\n")
     if cfg['run']['shower'] is False:
         logger.info('Writing Gen card, without parton shower.')
         if cfg['gen']['block_model']['order'].lower() == "lo":
