@@ -15,7 +15,7 @@ def make_process(cfg : DictConfig) -> None:
     run_settings = ""
     if 'block_settings' in cfg['gen'].keys():
         for name, val in cfg['gen']['block_settings'].items():
-            run_settings += f"set {name} {val}"
+            run_settings += f"set {name} {val}\n"
 
     try:
         model = "import model " + settings['model']
