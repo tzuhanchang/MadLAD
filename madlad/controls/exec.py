@@ -23,8 +23,8 @@ def makeProcess(cfg : DictConfig, logger) -> None:
         logger.info('Creating a MG5 run directory with Docker.')
         subprocess.run(
             [
-                "docker", "run", "--rm", "-it", "-w", "/home/atreus/data",
-                "-v", f"{Path().absolute()}:/home/atreus/data",
+                "docker", "run", "--rm", "-it", "-w", "/root",
+                "-v", f"{Path().absolute()}:/root",
                 image_name, cfg['run']['mg5'],
                 f"proc_card_mg5-{os.path.basename(cfg['gen']['block_model']['save_dir'])}.dat"
             ]

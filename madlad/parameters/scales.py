@@ -28,6 +28,10 @@ def edit_scales(cfg: DictConfig) -> None:
     with open(fileN, 'r') as file:
         lines = file.readlines()
 
+    # For MG5 version >= 3.5
+    if mark_i not in lines:
+        mark_i = "      elseif(dynamical_scale_choice.eq.10.or.dynamical_scale_choice.eq.0) then"
+
     start_index = -1
     end_index = -1
 

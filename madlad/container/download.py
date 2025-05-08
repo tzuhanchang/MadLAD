@@ -38,12 +38,12 @@ def get_model(model_names: List|str, model_dict: str = "/app/MG5_aMC/models", bu
                 if build_method == "docker":
                     to_write += [
                         "cd %s"%(model_dict),
-                        "sudo wget %s"%(lookup_dict[key]),
-                        "sudo %s %s"%(extract_command, file_name),
+                        "wget %s"%(lookup_dict[key]),
+                        "%s %s"%(extract_command, file_name),
                         "cd /tmp",
-                        "sudo echo -e \"convert model %s/%s\" > convert.dat"%(model_dict, main_model_name),
-                        "sudo /usr/local/bin/mg5 convert.dat",
-                        "sudo rm convert.dat"
+                        "echo -e \"convert model %s/%s\" > convert.dat"%(model_dict, main_model_name),
+                        "/usr/local/bin/mg5 convert.dat",
+                        "rm convert.dat"
                     ]
                 elif build_method == "singularity":
                     to_write += [
@@ -98,7 +98,7 @@ def get_pdfset(pdf_ids: List|int, pdfsets_dict: Optional[str] = "/usr/local/shar
         if is_int:
             try:
                 if build_method == "docker":
-                    pdf_links = "sudo wget http://lhapdfsets.web.cern.ch/lhapdfsets/current/%s.tar.gz && sudo tar -zxf %s.tar.gz"%(all_pdfs[str(pdf_ids)],all_pdfs[str(pdf_ids)])
+                    pdf_links = "wget http://lhapdfsets.web.cern.ch/lhapdfsets/current/%s.tar.gz && tar -zxf %s.tar.gz"%(all_pdfs[str(pdf_ids)],all_pdfs[str(pdf_ids)])
                 elif build_method == "singularity":
                     pdf_links = "wget http://lhapdfsets.web.cern.ch/lhapdfsets/current/%s.tar.gz && tar -zxf %s.tar.gz"%(all_pdfs[str(pdf_ids)],all_pdfs[str(pdf_ids)])
             except KeyError:
@@ -106,7 +106,7 @@ def get_pdfset(pdf_ids: List|int, pdfsets_dict: Optional[str] = "/usr/local/shar
         else:
             try:
                 if build_method == "docker":
-                    pdf_links = [ "sudo wget http://lhapdfsets.web.cern.ch/lhapdfsets/current/%s.tar.gz && sudo tar -zxf %s.tar.gz"%(all_pdfs[str(pdf_id)],all_pdfs[str(pdf_id)]) for pdf_id in pdf_ids ]
+                    pdf_links = [ "wget http://lhapdfsets.web.cern.ch/lhapdfsets/current/%s.tar.gz && tar -zxf %s.tar.gz"%(all_pdfs[str(pdf_id)],all_pdfs[str(pdf_id)]) for pdf_id in pdf_ids ]
                 elif build_method == "singularity":
                     pdf_links = [ "wget http://lhapdfsets.web.cern.ch/lhapdfsets/current/%s.tar.gz && tar -zxf %s.tar.gz"%(all_pdfs[str(pdf_id)],all_pdfs[str(pdf_id)]) for pdf_id in pdf_ids ]
             except KeyError:

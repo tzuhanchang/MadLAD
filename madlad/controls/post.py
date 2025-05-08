@@ -24,8 +24,8 @@ def runPost(cfg : DictConfig, logger) -> None:
             logger.info('Running post commands using Docker.')
             subprocess.run(
                 [
-                    "docker", "run", "--rm", "-it", "-w", "/home/atreus/data",
-                    "-v", f"{Path().absolute()}:/home/atreus/data",
+                    "docker", "run", "--rm", "-it", "-w", "/root",
+                    "-v", f"{Path().absolute()}:/root",
                     image_name, "/bin/bash", f"post-commands"
                 ]
             )
