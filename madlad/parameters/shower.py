@@ -1,7 +1,8 @@
-import yaml
+import os
 import warnings
 
-from omegaconf import DictConfig, OmegaConf
+from typing import Dict, Set
+from omegaconf import DictConfig
 
 
 def edit_shower(cfg: DictConfig) -> None:
@@ -12,61 +13,72 @@ def edit_shower(cfg: DictConfig) -> None:
         settings (optional: madlad.utils.config): settings.
     """
     save_dir = cfg['gen']['block_model']['save_dir']
+    order = cfg['gen']['block_model']['order'].lower()
+
+    def card_paths(order: str, base: str):
+        if order == "nlo":
+            return (
+                os.path.join(base, "Cards", "shower_card_default.dat"),
+                os.path.join(base, "Cards", "shower_card.dat"),
+            )
+        return (
+            os.path.join(base, "Cards", "pythia8_card_default.dat"),
+            os.path.join(base, "Cards", "pythia8_card.dat"),
+        )
+
+    default_path, new_path = card_paths(order, save_dir)
+
+    comment_symbol = "#" if order == "nlo" else "!"
 
     try:
-        settings = yaml.load(OmegaConf.to_yaml(cfg['gen']['block_shower']['settings']), Loader=yaml.SafeLoader)
-        # Operate on lower case settings, and choose the capitalization MG5 has as the default (or all lower case)
-        for s in list(settings.keys()):
-            if s.lower() not in settings:
-                settings[s.lower()] = settings[s]
-                del settings[s]
+        raw_settings = cfg["gen"]["block_shower"]["settings"]
+        settings: Dict[str, object] = {
+            k.lower(): v for k, v in raw_settings.items()
+        }
+    except Exception:
+        settings = {}
 
-        defaultCard = open(save_dir+"/Cards/shower_card_default.dat", 'r')
-        newCard = open(save_dir+'/Cards/shower_card.dat', 'w')
-        used_settings = []
-        for line in iter(defaultCard):
-            if not line.strip().startswith('#'): # line commented out
-                command = line.split('#', 1)[0]
-                comment = line.split('#', 1)[1] if '#' in line else ''
-                if '=' in command:
-                    setting = command.split('=')[0] #.strip()
-                    stripped_setting = setting.strip()
-                    oldValue = '='.join(command.split('=')[1:])
-                    if stripped_setting.lower() in settings:
-                        # if setting set to 'None' it will be removed from run_card
-                        if settings[stripped_setting.lower()] is None:
-                            line=''
-                            print('Removing '+stripped_setting+'.')
-                            used_settings += [ stripped_setting.lower() ]
-                        else:
-                            line = setting+'= '+oldValue.replace(oldValue.strip(), str(settings[stripped_setting.lower()]))
-                            if comment != '':
-                                line += '#' + comment
-                            print('Setting '+stripped_setting+' = '+str(settings[stripped_setting.lower()]))
-                            used_settings += [ stripped_setting.lower() ]
-            newCard.write(line.strip()+'\n')
+    used: Set[str] = set()
 
-        # Clean up unused options
-        for asetting in settings:
-            if asetting in used_settings:
+    with open(default_path) as default_card, open(new_path, "w") as new_card:
+        for line in default_card:
+            # Preserve comments and blank lines
+            if not line.strip() or line.lstrip().startswith(comment_symbol):
+                new_card.write(line)
                 continue
-            if settings[asetting] is None:
+
+            if "=" not in line:
+                new_card.write(line)
                 continue
-            warnings.warn('Option '+asetting+' was not in the default shower_card.  Adding by hand a setting to '+str(settings[asetting]) )
-            newCard.write( str(asetting)+' = '+str(settings[asetting])+'\n')
-    except:
-        pass
 
-    try:
-        decays   = yaml.load(OmegaConf.to_yaml(cfg['gen']['block_shower']['decays']), Loader=yaml.SafeLoader)
-        # Write decays
-        for channel in decays:
-            print(f"Writting channel {channel}.")
-            newCard.write( channel+'\n')
-    except:
-        pass
+            setting, rest = line.split("=", 1)
+            key = setting.strip().lower()
+            value = rest.rstrip("\n")
 
-    # close files
-    defaultCard.close()
-    newCard.close()
-    print('Finished modification of shower card.')
+            if key in settings:
+                val = settings[key]
+                used.add(key)
+                if val is None:          # remove the line
+                    print(f"Removing {key}.")
+                    continue
+                new_card.write(f"{setting} = {val}\n")
+                print(f"Setting {key} = {val}.")
+            else:
+                new_card.write(line)
+
+        for key, val in settings.items():
+                if key in used or val is None:
+                    continue
+                warnings.warn(
+                    f"Option {key} was not in the default shower_card. "
+                    f"Adding by hand a setting to {val}"
+                )
+                new_card.write(f"{key} = {val}\n")
+
+        for block_name in ("misc",):
+            block = cfg["gen"]["block_shower"].get(block_name, [])
+            for entry in block:
+                print(f"Writing {block_name}: {entry}")
+                new_card.write(f"{entry}\n")
+
+    print("Finished modification of shower card.")
