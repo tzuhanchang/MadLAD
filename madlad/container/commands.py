@@ -152,7 +152,7 @@ RUN cd /app/MG5_aMC \\
  && /usr/local/bin/mg5 mg5_exec_card && cd /
 
 """
-        singularity_command = f"""    mkdir /app && mv /home/atreus/MG5_aMC /app/ && cd /app/MG5_aMC
+        singularity_command = f"""    mkdir /app && mv /MG5_aMC /app/ && cd /app/MG5_aMC
     ln -fs /app/MG5_aMC/bin/mg5_aMC /usr/local/bin/mg5
     sed -i 's/# pythia8_path = .\/HEPTools\/pythia8/pythia8_path = \/usr\/local/' ./input/mg5_configuration.txt
     sed -i 's/# delphes_path = .\/Delphes/delphes_path = \/usr\/local/' ./input/mg5_configuration.txt
