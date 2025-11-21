@@ -8,13 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
- - Add Shower Controls ([#61](https://github.com/tzuhanchang/MadLAD/pull/68))
+ - Add Shower Controls ([#61](https://github.com/tzuhanchang/MadLAD/pull/61))
 
 ### Changed
 
 ### Removed
 
 ### Fixed
+ - Fix Singularity build with an external MG5 directory ([#70](https://github.com/tzuhanchang/MadLAD/pull/70))
 
 
 ## [v3.1.0] - 2025-05-28
