@@ -9,8 +9,13 @@ Tops
 
 - $t\bar{t}$:
 
-    * All-hadronic: `ttbar-allhad`.
+    * All-hadronic (NLO): `ttbar-allhad`.
 
 - $t\bar{t}t\bar{t}$:
 
-    * Inclusive: `4top`.
+    * Inclusive (NLO): `4top`.
+
+Higgs
+-----------------
+
+- $t\bar{t}H$ (NLO): `ttH_nlo`.
