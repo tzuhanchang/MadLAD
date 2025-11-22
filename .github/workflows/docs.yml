@@ -3,6 +3,8 @@ name: Deploy Docs
 on:
   push:
     branches: [ main ]
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, labeled, unlabeled]
 
 jobs:
   deploy:
