@@ -1,0 +1,22 @@
+:root  > * {
+  --md-primary-fg-color: #28abe2 !important;
+}
+
+/* Header text and icon color */
+.md-header {
+  color: #ffffff !important;
+}
+
+/* Top navigation tab text color */
+.md-tabs,
+.md-tabs__link,
+.md-tabs__link:link,
+.md-tabs__link:visited {
+  color: #ffffff !important;
+}
+
+/* Active tab */
+.md-tabs__item--active > .md-tabs__link {
+  color: #ffffff !important;
+  font-weight: 600;
+}
