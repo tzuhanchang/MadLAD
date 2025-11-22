@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Add Shower Controls ([#61](https://github.com/tzuhanchang/MadLAD/pull/61))
 
 ### Changed
+ - Use GitHub Page for documentation hosting ([#72](https://github.com/tzuhanchang/MadLAD/pull/72))
  - Use MkDocs Material for documentation ([#71](https://github.com/tzuhanchang/MadLAD/pull/71))
 
 ### Removed
