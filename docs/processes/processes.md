@@ -1,0 +1,25 @@
+Built-in Processes
+=======================
+
+Below you’ll find the **built‑in Monte‑Carlo (MC) processes** that ship with MadLAD. If you need something else, or want to add a new one, feel free to open an **issue** [here](https://github.com/tzuhanchang/MadLAD/issues) or a **pull request** [here](https://github.com/tzuhanchang/MadLAD/pulls).  Contributions are always welcome!  
+
+| Category | Process | **Order** | Description |
+|----------|---------------|-----------|-------------|
+| **Top quarks**   | `ttbar-allhad` | NLO | $t\bar{t}$ → all‑hadronic |
+|                  | `4top`         | NLO | $t\bar{t}t\bar{t}$ → inclusive |
+| **Higgs + tops** | `ttH_nlo`      | NLO | $t\bar{t}H$ → inclusive |
+
+> **Tip:** Each process name is the identifier you pass to `python -m madlad.generate --config-name=<name>`. For example:  
+> ```bash
+> python -m madlad.generate --config-name=ttbar-allhad
+> ```
+
+---
+
+### How to add a new process
+
+1. **Create the configuration** (`<name>.yaml`) in `examples/` or a dedicated folder.  
+2. **Add the YAML file** to the repository (or propose it via a PR).  
+3. **Tag your change** with a clear description, e.g., *“Add $t\bar{t}\gamma$ at NLO”*.  
+
+That’s it!  The next time someone else wish to run `madlad.generate`, the new process will be available out of the box.

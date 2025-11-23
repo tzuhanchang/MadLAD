@@ -1,0 +1,4 @@
+arrange:
+  - installation.md
+  - build-container.md
+  - event-generation.md
