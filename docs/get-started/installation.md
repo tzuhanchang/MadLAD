@@ -1,7 +1,7 @@
 Installation
 =======================
 
-Get the latest MadLAD release:
+Get the latest MadLAD from GitHub:
 ```
 git clone https://github.com/tzuhanchang/MadLAD.git
 ```

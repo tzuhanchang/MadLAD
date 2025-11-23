@@ -48,14 +48,10 @@ nav:
     - Changelog: CHANGELOG.md
     - Licence: LICENCE.md
     - Contributors: contributors.md
-  - Quick Start:
-    - Installation: source/installation.md
-    - Build Containers: source/tutorials/build_containers.md
-    - Event Generation: source/tutorials/generate_events.md
-  - Advanced:
-    - Running on HTCondor: source/advanced/htcondor.md
-  - Processes:
-    - Available Processes: source/processes/available_processes.md
+  - User Guide:
+    - ... | get-started/**.md
+    - ... | advanced-topics/**.md
+  - Built-in Processes: processes/processes.md
 
 markdown_extensions:
   - admonition
@@ -76,6 +72,6 @@ extra_css:
 extra_javascript:
   - 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML'
 
-extra:
-  version:
-    provider: mike
+# extra:
+  # version:
+  #   provider: mike
