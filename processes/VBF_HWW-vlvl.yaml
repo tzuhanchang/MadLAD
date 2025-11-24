@@ -1,0 +1,57 @@
+run:
+  image:       "madlad-custom"
+  mg5:         "/app/MG5_aMC/bin/mg5_aMC"
+  launch-from: null
+  auto-launch: False
+  shower:      True
+
+gen:
+  block_settings:
+    run_mode:       2
+    nb_core:        4
+
+  block_model:
+    model:          HC_NLO_X0_UFO-no_b_mass
+    multiparticle:
+      - p = g u c d s u~ c~ d~ s~ b b~
+      - j = g u c d s u~ c~ d~ s~ b b~
+    proc:           p p > x0 j j $$ w+ w- z / a [QCD]
+    order:          nlo
+    save_dir:       Output
+
+  block_run:
+    nevents:        1000
+    nevt_job:       1000
+    iseed:          0
+    beamenergy:     6500
+    parton_shower:  "PYTHIA8"
+    pdlabel:        "lhapdf"
+    lhe_version:    "3.0"
+    lhaid:          260000
+    maxjetflavor:   5
+    reweight_scale: ".true."
+    jetalgo:        -1
+    jetradius:      0.4
+    ptj:            10
+  
+  block_madspin:
+    multiparticle:
+      - l+ = e+ mu+ ta+
+      - l- = e- mu- ta-
+    decays:
+      - x0 > w+ w- > l+ vl l- vl~
+    max_weight_ps_point: 400
+    spinmode: "none"
+
+  block_param:
+    param: "VBF_HWW/param_card_VBF-HWW.dat"
+
+  block_delphes:
+    delphes_card: "ATLAS_sim_FASTJET.tcl"
+
+pre-launch:
+  - cp param/VBF_HWW/amcatnlo_run_interface.py ${gen.block_model.save_dir}/bin/internal/
+  - cp param/VBF_HWW/FKS_params.dat ${gen.block_model.save_dir}/Cards/
+
+post:
+  - echo 'Finished'

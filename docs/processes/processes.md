@@ -9,6 +9,7 @@ Below you’ll find the **built‑in Monte‑Carlo (MC) processes** that ship wi
 |                  | `ttbar-dilep`  | NLO | $t\bar{t}$ → di-leptonic |
 |                  | `ttbar-semilep`| NLO | $t\bar{t}$ → semi-leptonic |
 |                  | `4top`         | NLO | $t\bar{t}t\bar{t}$ → inclusive |
+| **Higgs**        | `VBF_HWW-vlvl` | NLO | $H\rightarrow W^+W^- \rightarrow \nu l^+ \bar{\nu} l^-$  |
 | **Higgs + tops** | `ttH_nlo`      | NLO | $t\bar{t}H$ → inclusive |
 
 > **Tip:** Each process name is the identifier you pass to `python -m madlad.generate --config-name=<name>`. For example:  
