@@ -19,5 +19,8 @@ def cleanUp(cfg : DictConfig, logger) -> None:
     if os.path.exists("post-commands"):
         subprocess.Popen(["rm", "post-commands"])
 
+    if os.path.exists("pre-launch-commands"):
+        subprocess.Popen(["rm", "pre-launch-commands"])
+
     if os.path.exists("py.py"):
         subprocess.Popen(["rm", "py.py"])

@@ -1,6 +1,6 @@
 import shutil
 
-from os.path import exists
+from os.path import exists, join
 from omegaconf import DictConfig
 
 
@@ -13,7 +13,7 @@ def copy_param_card(cfg: DictConfig) -> None:
     save_dir = cfg['gen']['block_model']['save_dir']
     settings = cfg['gen']['block_param']
 
-    paramNameToCopy = "param/"+settings['param']
+    paramNameToCopy = join("param", settings['param'])
 
     if exists(paramNameToCopy):
         pass
