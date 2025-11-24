@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+ - Add MG5 subprocess functionality ([#78](https://github.com/tzuhanchang/MadLAD/pull/78))
  - Add `VBF_HWW-vlvl` process ([#77](https://github.com/tzuhanchang/MadLAD/pull/77))
  - Add `pre-launch` option ([#76](https://github.com/tzuhanchang/MadLAD/pull/76))
  - Add `ttbar-dilep` and `ttbar-semilep` processes ([#74](https://github.com/tzuhanchang/MadLAD/pull/74))
