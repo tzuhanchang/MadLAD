@@ -6,6 +6,8 @@ Below you’ll find the **built‑in Monte‑Carlo (MC) processes** that ship wi
 | Category | Process | **Order** | Description |
 |----------|---------------|-----------|-------------|
 | **Top quarks**   | `ttbar-allhad` | NLO | $t\bar{t}$ → all‑hadronic |
+|                  | `ttbar-dilep`  | NLO | $t\bar{t}t\bar{t}$ → di-leptonic |
+|                  | `ttbar-semilep`| NLO | $t\bar{t}t\bar{t}$ → semi-leptonic |
 |                  | `4top`         | NLO | $t\bar{t}t\bar{t}$ → inclusive |
 | **Higgs + tops** | `ttH_nlo`      | NLO | $t\bar{t}H$ → inclusive |
 
