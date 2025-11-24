@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+ - Add `ttbar-dilep` and `ttbar-semilep` processes ([#74](https://github.com/tzuhanchang/MadLAD/pull/74))
  - Add Shower Controls ([#61](https://github.com/tzuhanchang/MadLAD/pull/61))
 
 ### Changed
