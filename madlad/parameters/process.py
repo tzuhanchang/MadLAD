@@ -1,6 +1,6 @@
 import os
 
-from omegaconf import DictConfig
+from omegaconf import DictConfig, listconfig
 
 
 def make_process(cfg : DictConfig) -> None:
@@ -23,7 +23,19 @@ def make_process(cfg : DictConfig) -> None:
         raise ValueError("No MadGraph model is provided! Please define in the configuration file.")
 
     try:
-        proc = "generate " + settings['proc']
+        print(type(settings['proc']))
+        if type(settings['proc']) == str:
+            proc = f"generate {settings['proc']}"
+        elif type(settings['proc']) == listconfig.ListConfig:
+            proc = ""
+            for i, sub_proc in enumerate(settings['proc']):
+                if i == 0:
+                    proc += f"generate {sub_proc}\n"
+                else:
+                    proc += f"add process {sub_proc}\n"
+        else:
+            raise ValueError("Please report this issue on GitHub")
+
     except KeyError:
         raise ValueError("No MadGraph process is provided! Please define in the configuration file.")
 
