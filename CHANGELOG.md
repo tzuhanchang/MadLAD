@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+ - Add `ggF_H_FxFx` process ([#79](https://github.com/tzuhanchang/MadLAD/pull/79))
  - Add processes additionally to the main MG5 process ([#78](https://github.com/tzuhanchang/MadLAD/pull/78))
  - Add `VBF_HWW-vlvl` process ([#77](https://github.com/tzuhanchang/MadLAD/pull/77))
  - Add `pre-launch` option ([#76](https://github.com/tzuhanchang/MadLAD/pull/76))
