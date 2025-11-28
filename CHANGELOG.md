@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+ - Add `Ztautau-vvlvvl` process ([#80](https://github.com/tzuhanchang/MadLAD/pull/80))
  - Add `ggF_H_FxFx` process ([#79](https://github.com/tzuhanchang/MadLAD/pull/79))
  - Add processes additionally to the main MG5 process ([#78](https://github.com/tzuhanchang/MadLAD/pull/78))
  - Add `VBF_HWW-vlvl` process ([#77](https://github.com/tzuhanchang/MadLAD/pull/77))
