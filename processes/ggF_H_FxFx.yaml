@@ -20,7 +20,7 @@ gen:
       - p p > x0 j / t a [QCD] @1
       - p p > x0 j j / t a [QCD] @2
     order:          nlo
-    save_dir:       ggF_H
+    save_dir:       Output
 
   block_run:
     nevents:        1000
