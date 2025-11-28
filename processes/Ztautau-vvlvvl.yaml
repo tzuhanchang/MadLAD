@@ -1,0 +1,49 @@
+run:
+  image:       "madlad-custom"
+  mg5:         "/app/MG5_aMC/bin/mg5_aMC"
+  launch-from: null
+  auto-launch: False
+  shower:      True
+
+gen:
+  block_settings:
+    run_mode:       2
+    nb_core:        4
+
+  block_model:
+    model:          loop_sm-no_b_mass
+    multiparticle:
+      - p = g u c d s u~ c~ d~ s~ b b~
+      - j = g u c d s u~ c~ d~ s~ b b~
+    proc:           "p p > ta+ ta- [QCD]"
+    order:          "nlo"
+    save_dir:       "Output"
+
+  block_run:
+    nevents:        1000
+    nevt_job:       1000
+    iseed:          0
+    beamenergy:     6500
+    pdlabel:        "lhapdf"
+    lhaid:          325100
+    parton_shower:  "PYTHIA8"
+    maxjetflavor:   5
+    mll_sf:         40
+    mll:            40
+
+  block_shower:
+    settings:
+      nsplit_jobs:  1
+    misc:
+      - DM_1 = 15:onMode = off
+      - DM_2 = 15:oneChannel = 1 0.5 100 11 -12 -16
+      - DM_3 = 15:addChannel = 1 0.5 100 13 -14 -16
+      - DM_4 = -15:onMode = off
+      - DM_5 = -15:oneChannel = 1 0.5 100 -11 12 16
+      - DM_6 = -15:oneChannel = 1 0.5 100 -13 14 16
+
+  block_delphes:
+    delphes_card: "ATLAS_sim_FASTJET.tcl"
+
+post:
+  - echo 'Finished'
