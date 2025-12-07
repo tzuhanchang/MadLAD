@@ -1,0 +1,68 @@
+run:
+  image:       "madlad-custom"
+  mg5:         "/app/MG5_aMC/bin/mg5_aMC"
+  launch-from: null
+  auto-launch: False
+  shower:      True
+
+gen:
+  block_settings:
+    run_mode: 2
+    nb_core:  10
+    auto_convert_model:  T
+
+  block_model:
+    model:  loop_qcd_qed_sm_Gmu
+    multiparticle:
+      - p = g u c d s u~ c~ d~ s~ b b~
+      - j = g u c d s u~ c~ d~ s~ b b~
+    proc:
+      - p p > w+ w+  j j QED=4 QCD=0 [QCD] @1
+      - p p > w- w-  j j QED=4 QCD=0 [QCD] @1
+    order:          "nlo"
+    save_dir:       "Output"
+
+  block_run:
+    nevents:         1000
+    nevt_job:        1000
+    iseed:           0
+    beamenergy:      6500
+    parton_shower:   PYTHIA8
+    lhe_version:     3.0
+    pdlabel:         lhapdf
+    lhaid:           260000
+    bwcutoff:        15
+    maxjetflavor:    5
+    jetalgo:         -1
+    jetradius:       0.4
+    ptj:             15.0
+    etaj:            5.5
+    ptl:             4.0
+    etal:            3.0
+    drll:            0.2
+    ickkw:           0
+    store_rwgt_info: true
+    event_norm :     sum
+    reweight_scale:  true
+    reweight_PDF:    true
+
+  block_madspin:
+    multiparticle:
+      - l+ = e+ mu+
+      - l- = e- mu-
+      - v = ve vm
+      - v~ = ve~ vm~
+    decays:
+      - w+ > l+ v 
+      - w- > l- v~
+    max_weight_ps_point: 400
+
+  block_delphes:
+    delphes_card: "ATLAS_sim_FASTJET.tcl"
+
+pre-launch:
+  - cp param/ssWWjj-vlvl/FKS_params.dat ${gen.block_model.save_dir}/Cards/
+  - cp param/ssWWjj-vlvl/MCatNLO_MadFKS_PYTHIA8.Script ${gen.block_model.save_dir}/MCatNLO/Scripts/
+
+post:
+  - echo 'Finished'

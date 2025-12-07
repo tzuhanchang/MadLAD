@@ -12,7 +12,9 @@ Below you’ll find the **built‑in Monte‑Carlo (MC) processes** that ship wi
 | **Higgs**        | `ggF_H_FxFx`      | NLO | ggF $H$ → inclusive (FxFx)                | MG5=v2.9.*      |
 |                  | `VBF_HWW-vlvl`    | NLO | VBF $H$→$W^+W^-$→$\nu l^+ \bar{\nu} l^-$  | MG5=v2.9.*      |
 | **Higgs + tops** | `ttH_nlo`         | NLO | $t\bar{t}H$ → inclusive                   |                 |
-| **SM**           | `Ztautau-vvlvvl`  | NLO | $Z$→$\tau^+\tau^-$ ($\tau^\pm$→$\nu_\tau\nu_{l^\pm}l^\pm$)| |
+| **SM**           | `ssWWjj_nlo-vlvl` | NLO | Same-sign WW                              | MG5=v2.9.*      |
+|                  | `ssWWjj_lo-vlvl`  | LO  | Same-sign WW                              | MG5=v2.9.*      |
+|                  | `Ztautau-vvlvvl`  | NLO | $Z$→$\tau^+\tau^-$ ($\tau^\pm$→$\nu_\tau\nu_{l^\pm}l^\pm$)| |
 
 
 > **Tip:** Each process name is the identifier you pass to `python -m madlad.generate --config-name=<name>`. For example:  

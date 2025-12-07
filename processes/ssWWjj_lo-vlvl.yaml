@@ -1,0 +1,59 @@
+run:
+  image:       "madlad-custom"
+  mg5:         "/app/MG5_aMC/bin/mg5_aMC"
+  launch-from: null
+  auto-launch: False
+  shower:      True
+
+gen:
+  block_settings:
+    run_mode: 2
+    nb_core:  4
+
+  block_model:
+    model:  sm-no_b_mass
+    multiparticle:
+      - p = g u c d s u~ c~ d~ s~ b b~
+      - j = g u c d s u~ c~ d~ s~ b b~
+      - l+ = e+ mu+
+      - vl = ve vm
+      - l- = e- mu-
+      - vl~ = ve~ vm~
+    proc:
+      - p p > w+ w+ j j QCD=0, w+ > l+ vl @0
+      - p p > w- w- j j QCD=0, w- > l- vl~ @0
+    order:          "lo"
+    save_dir:       "Output"
+
+  block_run:
+    nevents:         1000
+    iseed:           0
+    beamenergy:      6500
+    lhe_version:     3.0
+    pdlabel:         lhapdf
+    lhaid:           260000
+    bwcutoff:        15
+    maxjetflavor:    5
+    ptl:             4.0
+    ptj:             15.0
+    etal:            3.0
+    etaj:            5.5
+    drll:            0.
+    asrwgtflavor:    5
+    auto_ptj_mjj:    False
+    cut_decays:      True
+    ptb:             15.0
+    etab:            5.5
+    dral:            0.1
+    drbb:            0.2
+    drbj:            0.2
+    drbl:            0.2
+    drjj:            0.2
+    drjl:            0.2
+    mmll:            0.0
+
+  block_delphes:
+    delphes_card: "ATLAS_sim_FASTJET.tcl"
+
+post:
+  - echo 'Finished'
