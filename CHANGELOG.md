@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 ### Fixed
+ - Fix Python 2 model conversion issue ([#84](https://github.com/tzuhanchang/MadLAD/pull/84))
  - Fix Singularity build with an external MG5 directory ([#70](https://github.com/tzuhanchang/MadLAD/pull/70))
 
 
