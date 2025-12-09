@@ -45,6 +45,13 @@ def edit_madspin(cfg: DictConfig) -> None:
         max_weight_ps_point = "set max_weight_ps_point 400  # number of PS to estimate the maximum for each event"
 
     try:
+        misc = ""
+        for defined in settings['misc']:
+            misc += defined + "\n"
+    except KeyError:
+        misc = ""
+
+    try:
         multiparticle = ""
         for defined in settings['multiparticle']:
             multiparticle += "define " + defined + "\n"
@@ -79,13 +86,15 @@ def edit_madspin(cfg: DictConfig) -> None:
 %s
 %s
 %s
+%s
 
 # specify the decay for the final state particles
 %s
 %s
 # running the actual code
 launch
-"""%(seed,
+"""%(misc,
+     seed,
      Nevents_for_max_weight,
      BW_cut,
      spinmode,
