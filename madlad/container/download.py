@@ -28,7 +28,7 @@ def get_model(model_names: List|str, model_dict: str = "/app/MG5_aMC/models", bu
     for key in list(lookup_dict.keys()):
         for main_model_name in main_model_names:
             if main_model_name == key and (main_model_name != "MSSM_SLHA2" or main_model_name != "loop_sm" or main_model_name != "taudecay_UFO"):
-                
+
                 file_name = os.path.basename(lookup_dict[key])
                 if ".zip" in file_name:
                     extract_command = "unzip"
@@ -41,7 +41,7 @@ def get_model(model_names: List|str, model_dict: str = "/app/MG5_aMC/models", bu
                         "wget %s"%(lookup_dict[key]),
                         "%s %s"%(extract_command, file_name),
                         "cd /tmp",
-                        "echo -e \"convert model %s/%s\" > convert.dat"%(model_dict, main_model_name),
+                        "echo \"convert model %s/%s\" > convert.dat"%(model_dict, main_model_name),
                         "/usr/local/bin/mg5 convert.dat",
                         "rm convert.dat"
                     ]
@@ -52,7 +52,7 @@ def get_model(model_names: List|str, model_dict: str = "/app/MG5_aMC/models", bu
                         "wget %s"%(lookup_dict[key]),
                         "%s %s"%(extract_command, file_name),
                         "mv * %s"%(model_dict),
-                        "echo -e \"convert model %s/%s\" > convert.dat"%(model_dict, main_model_name),
+                        "echo \"convert model %s/%s\" > convert.dat"%(model_dict, main_model_name),
                         "/usr/local/bin/mg5 convert.dat",
                         "rm convert.dat"
                     ]
@@ -69,7 +69,7 @@ def get_model(model_names: List|str, model_dict: str = "/app/MG5_aMC/models", bu
                 write_out += " && %s \n"%(line)
             else:
                 write_out += " && %s \ \n"%(line)
-    
+
     elif build_method == "singularity":
         for idx, line in enumerate(to_write):
                 write_out += "    %s \n"%(line)
@@ -123,7 +123,7 @@ def get_pdfset(pdf_ids: List|int, pdfsets_dict: Optional[str] = "/usr/local/shar
                 write_out += " && %s \n"%(line)
             else:
                 write_out += " && %s \ \n"%(line)
-    
+
     elif build_method == "singularity":
         to_write = [
             "",

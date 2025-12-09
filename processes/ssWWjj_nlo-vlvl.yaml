@@ -9,7 +9,6 @@ gen:
   block_settings:
     run_mode: 2
     nb_core:  10
-    auto_convert_model:  T
 
   block_model:
     model:  loop_qcd_qed_sm_Gmu
