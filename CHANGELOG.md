@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Add Shower Controls ([#61](https://github.com/tzuhanchang/MadLAD/pull/61))
 
 ### Changed
+ - Bump up example MG5 version and add more models and PDF sets g ([#83](https://github.com/tzuhanchang/MadLAD/pull/83))
  - Use GitHub Page for documentation hosting ([#72](https://github.com/tzuhanchang/MadLAD/pull/72))
  - Use MkDocs Material for documentation ([#71](https://github.com/tzuhanchang/MadLAD/pull/71))
 
