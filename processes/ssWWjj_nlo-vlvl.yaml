@@ -46,7 +46,13 @@ gen:
     reweight_scale:  true
     reweight_PDF:    true
 
+  block_param:
+    param: "ssWWjj_nlo-vlvl/param_card.dat"
+
   block_madspin:
+    misc:
+      - import ${gen.block_model.save_dir}/Events/run_01
+      - set ms_dir ${gen.block_model.save_dir}/Events/run_01_decayed
     multiparticle:
       - l+ = e+ mu+
       - l- = e- mu-
@@ -56,13 +62,13 @@ gen:
       - w+ > l+ v 
       - w- > l- v~
     max_weight_ps_point: 400
+    seed: ${gen.block_run.iseed}
 
   block_delphes:
     delphes_card: "ATLAS_sim_FASTJET.tcl"
 
 pre-launch:
-  - cp param/ssWWjj-vlvl/FKS_params.dat ${gen.block_model.save_dir}/Cards/
-  - cp param/ssWWjj-vlvl/MCatNLO_MadFKS_PYTHIA8.Script ${gen.block_model.save_dir}/MCatNLO/Scripts/
+  - cp param/ssWWjj_nlo-vlvl/FKS_params.dat ${gen.block_model.save_dir}/Cards/
 
 post:
   - echo 'Finished'
