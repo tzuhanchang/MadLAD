@@ -50,7 +50,7 @@ gen:
 
   block_madspin:
     misc:
-      - import ${gen.block_model.save_dir}/Events/run_01
+      - import ${gen.block_model.save_dir}/Events/run_01/events.lhe
       - set ms_dir ${gen.block_model.save_dir}/Events/run_01_decayed
     multiparticle:
       - l+ = e+ mu+
