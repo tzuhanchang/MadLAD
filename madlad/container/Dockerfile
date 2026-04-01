@@ -1,7 +1,7 @@
-FROM ubuntu:focal
+FROM ubuntu:noble
 
 # metainformation
-LABEL org.opencontainers.image.version="4.0.0"
+LABEL org.opencontainers.image.version="5.0.0"
 LABEL org.opencontainers.image.authors="Zihan Zhang"
 LABEL org.opencontainers.image.source="https://zhangzi.web.cern.ch"
 
