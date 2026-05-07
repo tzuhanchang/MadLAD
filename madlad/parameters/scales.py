@@ -22,7 +22,7 @@ def edit_scales(cfg: DictConfig) -> None:
 
     fileN = save_dir+'/SubProcesses/setscales.f'
 
-    mark_i = "      elseif(dynamical_scale_choice.eq.0) then" if order=="lo" else "      elseif(dynamical_scale_choice.eq.10) then"
+    mark_i = "      elseif(dynamical_scale_choice.eq.0) then\n" if order=="lo" else "      elseif(dynamical_scale_choice.eq.10) then\n"
     mark_f = "      else"
 
     with open(fileN, 'r') as file:
@@ -30,7 +30,7 @@ def edit_scales(cfg: DictConfig) -> None:
 
     # For MG5 version >= 3.5
     if mark_i not in lines:
-        mark_i = "      elseif(dynamical_scale_choice.eq.10.or.dynamical_scale_choice.eq.0) then"
+        mark_i = "      elseif(dynamical_scale_choice.eq.10.or.dynamical_scale_choice.eq.0) then\n"
 
     start_index = -1
     end_index = -1
