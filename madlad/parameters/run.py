@@ -12,7 +12,7 @@ def edit_run(cfg: DictConfig) -> None:
         settings (optional: madlad.utils.config): settings.
     """
     save_dir = cfg['gen']['block_model']['save_dir']
-    settings = yaml.load(OmegaConf.to_yaml(cfg['gen']['block_run']), Loader=yaml.SafeLoader)
+    settings = OmegaConf.to_container(cfg['gen']['block_run'], resolve=True)
 
     # Operate on lower case settings, and choose the capitalization MG5 has as the default (or all lower case)
     for s in list(settings.keys()):
