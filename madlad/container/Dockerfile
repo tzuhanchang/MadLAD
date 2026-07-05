@@ -20,7 +20,8 @@ RUN apt install -y gfortran libpcre3-dev \
     python3-dev python3-numpy libxml2-dev libkrb5-dev \
     libgsl-dev qtwebengine5-dev nlohmann-json3-dev libmysqlclient-dev \
     libgl2ps-dev \
-    liblzma-dev libxxhash-dev liblz4-dev libzstd-dev
+    liblzma-dev libxxhash-dev liblz4-dev libzstd-dev \
+    libboost-all-dev
 
 RUN apt install -y nano vim rsync wget unzip ghostscript bc \
     python3-pip python3-six

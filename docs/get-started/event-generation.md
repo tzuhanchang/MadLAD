@@ -65,6 +65,7 @@ gen:
     muF1_over_ref:  1.0
     muF2_over_ref:  1.0
     dynamical_scale_choice: 10
+    # parton_shower: "PYTHIA8"   # or "HERWIGPP" for NLO processes, if the image was built with `herwig` (see Build Container)
     jetalgo:        -1          # Anti‑kT by default
     jetradius:      0.4
     ptj:            0.1

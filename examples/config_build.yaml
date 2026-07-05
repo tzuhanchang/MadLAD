@@ -7,6 +7,8 @@ build:
   lhapdf:  "6.5.5"
   fastjet: "3.4.0"
   delphes: "3.5.0"
+  # herwig:  "7.3.0"  # Optional: Herwig 7, for NLO (aMC@NLO) parton showering
+  # thepeg:  "2.3.0"  # Optional: ThePEG version to pair with `herwig` (defaults to "2.3.0")
 
 extra:
   pdfs:   [247000, 260000, 260400, 303400, 315000, 325100]  # Additional pdf sets

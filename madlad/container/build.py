@@ -2,7 +2,7 @@ import yaml
 import warnings
 import subprocess
 
-from madlad.container.commands import lhapdf_build, fastjet_build, pythia8_build, delphes_build, mg5_build
+from madlad.container.commands import lhapdf_build, fastjet_build, pythia8_build, delphes_build, mg5_build, thepeg_build, herwig_build
 from madlad.container.download import get_model, get_pdfset
 
 
@@ -42,15 +42,25 @@ def DockerBuild(config: str):
             warnings.warn("Delphes preference not found, use `Delphes=3.5.0`.")
             text_file.write(delphes_build(version="3.5.0")[0])
 
+        build_herwig = False
+        try:
+            herwig_version = settings['build']['herwig']
+            thepeg_version = settings['build'].get('thepeg', "2.3.0")
+            text_file.write(thepeg_build(version=thepeg_version)[0])
+            text_file.write(herwig_build(version=herwig_version)[0])
+            build_herwig = True
+        except KeyError:
+            pass
+
         try:
             if "." in settings['build']['mg5']:
-                text_file.write(mg5_build(version=settings['build']['mg5'])[0])
+                text_file.write(mg5_build(version=settings['build']['mg5'], herwig=build_herwig)[0])
             else:
                 print(f"Using external custom MadGraph5 installation provided in {settings['build']['mg5']}")
-                text_file.write(mg5_build(external=settings['build']['mg5'])[0])
+                text_file.write(mg5_build(external=settings['build']['mg5'], herwig=build_herwig)[0])
         except KeyError:
             warnings.warn("MadGraph5 preference not found, use `MadGraph5=3.5.3`.")
-            text_file.write(mg5_build(version="3.5.3")[0])
+            text_file.write(mg5_build(version="3.5.3", herwig=build_herwig)[0])
 
         try:
             text_file.write(get_pdfset(settings['extra']['pdfs'])),
@@ -116,15 +126,25 @@ From: tzuhanchang/madlad:latest
             warnings.warn("Delphes preference not found, use `Delphes=3.5.0`.")
             text_file.write(delphes_build(version="3.5.0")[1])
 
+        build_herwig = False
+        try:
+            herwig_version = settings['build']['herwig']
+            thepeg_version = settings['build'].get('thepeg', "2.3.0")
+            text_file.write(thepeg_build(version=thepeg_version)[1])
+            text_file.write(herwig_build(version=herwig_version)[1])
+            build_herwig = True
+        except KeyError:
+            pass
+
         try:
             if "." in settings['build']['mg5']:
-                text_file.write(mg5_build(version=settings['build']['mg5'])[1])
+                text_file.write(mg5_build(version=settings['build']['mg5'], herwig=build_herwig)[1])
             else:
                 print(f"Using external custom MadGraph5 installation provided in {settings['build']['mg5']}")
-                text_file.write(mg5_build(external=settings['build']['mg5'])[1])
+                text_file.write(mg5_build(external=settings['build']['mg5'], herwig=build_herwig)[1])
         except KeyError:
             warnings.warn("MadGraph5 preference not found, use `MadGraph5=3.5.3`.")
-            text_file.write(mg5_build(version="3.5.3")[1])
+            text_file.write(mg5_build(version="3.5.3", herwig=build_herwig)[1])
 
         try:
             text_file.write(get_pdfset(settings['extra']['pdfs'], build_method='singularity')),

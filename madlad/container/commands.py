@@ -100,7 +100,71 @@ def pythia8_build(version: str) -> Tuple[str,str]:
     return docker_command, singularity_command
 
 
-def mg5_build(version: Optional[str] = None, external: Optional[str] = None) -> Tuple[str,str]:
+def thepeg_build(version: str) -> Tuple[str,str]:
+    version_number = version.split('.')
+    if len(version_number) != 3:
+        raise ValueError("ThePEG version number provided not found. Please check list of available versions at 'https://thepeg.hepforge.org/downloads/'.")
+
+    download_link = f"http://www.hepforge.org/archive/thepeg/ThePEG-{version}.tar.bz2"
+
+    docker_command = f"""RUN cd /tmp \\
+ && wget {download_link} \\
+ && tar -xjf ThePEG-{version}.tar.bz2 && cd ThePEG-{version} \\
+ && ./configure --prefix=/usr/local --with-hepmc=/usr/local --with-lhapdf=/usr/local --without-javagui \\
+ && make && make install
+
+"""
+
+    singularity_command = f"""    cd /home/atreus/singularity-build
+    wget {download_link}
+    tar -xjf ThePEG-{version}.tar.bz2 && cd ThePEG-{version}
+    ./configure --prefix=/usr/local --with-hepmc=/usr/local --with-lhapdf=/usr/local --without-javagui
+    make && make install
+
+"""
+    return docker_command, singularity_command
+
+
+def herwig_build(version: str) -> Tuple[str,str]:
+    version_number = version.split('.')
+    if len(version_number) != 3:
+        raise ValueError("Herwig version number provided not found. Please check list of available versions at 'https://herwig.hepforge.org/downloads/'.")
+
+    download_link = f"http://www.hepforge.org/archive/herwig/Herwig-{version}.tar.bz2"
+
+    docker_command = f"""RUN cd /tmp \\
+ && wget {download_link} \\
+ && tar -xjf Herwig-{version}.tar.bz2 && cd Herwig-{version} \\
+ && ./configure --prefix=/usr/local --with-thepeg=/usr/local --with-hepmc=/usr/local --with-fastjet=/usr/local --with-lhapdf=/usr/local \\
+ && make && make install
+
+"""
+
+    singularity_command = f"""    cd /home/atreus/singularity-build
+    wget {download_link}
+    tar -xjf Herwig-{version}.tar.bz2 && cd Herwig-{version}
+    ./configure --prefix=/usr/local --with-thepeg=/usr/local --with-hepmc=/usr/local --with-fastjet=/usr/local --with-lhapdf=/usr/local
+    make && make install
+
+"""
+    return docker_command, singularity_command
+
+
+def mg5_build(version: Optional[str] = None, external: Optional[str] = None, herwig: bool = False) -> Tuple[str,str]:
+    herwig_sed_docker = ""
+    herwig_sed_singularity = ""
+    if herwig:
+        herwig_sed_docker = (
+            " && sed -i 's/# hwpp_path = /hwpp_path = \\/usr\\/local/' ./input/mg5_configuration.txt \\\n"
+            " && sed -i 's/# thepeg_path = /thepeg_path = \\/usr\\/local/' ./input/mg5_configuration.txt \\\n"
+            " && sed -i 's/# hepmc_path = /hepmc_path = \\/usr\\/local/' ./input/mg5_configuration.txt \\\n"
+        )
+        herwig_sed_singularity = (
+            "    sed -i 's/# hwpp_path = /hwpp_path = \\/usr\\/local/' ./input/mg5_configuration.txt\n"
+            "    sed -i 's/# thepeg_path = /thepeg_path = \\/usr\\/local/' ./input/mg5_configuration.txt\n"
+            "    sed -i 's/# hepmc_path = /hepmc_path = \\/usr\\/local/' ./input/mg5_configuration.txt\n"
+        )
+
     if version is not None:
         version_number = version.split('.')
         if len(version_number) < 3:
@@ -121,7 +185,7 @@ def mg5_build(version: Optional[str] = None, external: Optional[str] = None) -> 
  && sed -i 's/# delphes_path = .\/Delphes/delphes_path = \/usr\/local/' ./input/mg5_configuration.txt \\
  && sed -i 's/# lhapdf_py3 = lhapdf-config/lhapdf_py3 = \/usr\/local\/bin\/lhapdf-config/' ./input/mg5_configuration.txt \\
  && sed -i 's/# fastjet = fastjet-config/fastjet = \/usr\/local\/bin\/fastjet-config/' ./input/mg5_configuration.txt \\
- && cd /tmp && echo -e "import model loop_sm-no_b_mass\\ninstall mg5amc_py8_interface\\ngenerate p p > t t~ [QCD]\\noutput mg5_test_run" > mg5_exec_card \\
+{herwig_sed_docker} && cd /tmp && echo -e "import model loop_sm-no_b_mass\\ninstall mg5amc_py8_interface\\ngenerate p p > t t~ [QCD]\\noutput mg5_test_run" > mg5_exec_card \\
  && /usr/local/bin/mg5 mg5_exec_card && cd /
 
 """
@@ -134,7 +198,7 @@ def mg5_build(version: Optional[str] = None, external: Optional[str] = None) -> 
     sed -i 's/# delphes_path = .\/Delphes/delphes_path = \/usr\/local/' ./input/mg5_configuration.txt
     sed -i 's/# lhapdf_py3 = lhapdf-config/lhapdf_py3 = \/usr\/local\/bin\/lhapdf-config/' ./input/mg5_configuration.txt
     sed -i 's/# fastjet = fastjet-config/fastjet = \/usr\/local\/bin\/fastjet-config/' ./input/mg5_configuration.txt
-    cd /home/atreus/singularity-build && echo -e "import model loop_sm-no_b_mass\\ninstall mg5amc_py8_interface\\ngenerate p p > t t~ [QCD]\\noutput mg5_test_run" > mg5_exec_card
+{herwig_sed_singularity}    cd /home/atreus/singularity-build && echo -e "import model loop_sm-no_b_mass\\ninstall mg5amc_py8_interface\\ngenerate p p > t t~ [QCD]\\noutput mg5_test_run" > mg5_exec_card
     /usr/local/bin/mg5 mg5_exec_card && cd /
 
 """
@@ -148,7 +212,7 @@ RUN cd /app/MG5_aMC \\
  && sed -i 's/# delphes_path = .\/Delphes/delphes_path = \/usr\/local/' ./input/mg5_configuration.txt \\
  && sed -i 's/# lhapdf_py3 = lhapdf-config/lhapdf_py3 = \/usr\/local\/bin\/lhapdf-config/' ./input/mg5_configuration.txt \\
  && sed -i 's/# fastjet = fastjet-config/fastjet = \/usr\/local\/bin\/fastjet-config/' ./input/mg5_configuration.txt \\
- && cd /tmp && echo -e "import model loop_sm-no_b_mass\\ninstall mg5amc_py8_interface\\ngenerate p p > t t~ [QCD]\\noutput mg5_test_run" > mg5_exec_card \\
+{herwig_sed_docker} && cd /tmp && echo -e "import model loop_sm-no_b_mass\\ninstall mg5amc_py8_interface\\ngenerate p p > t t~ [QCD]\\noutput mg5_test_run" > mg5_exec_card \\
  && /usr/local/bin/mg5 mg5_exec_card && cd /
 
 """
@@ -158,7 +222,7 @@ RUN cd /app/MG5_aMC \\
     sed -i 's/# delphes_path = .\/Delphes/delphes_path = \/usr\/local/' ./input/mg5_configuration.txt
     sed -i 's/# lhapdf_py3 = lhapdf-config/lhapdf_py3 = \/usr\/local\/bin\/lhapdf-config/' ./input/mg5_configuration.txt
     sed -i 's/# fastjet = fastjet-config/fastjet = \/usr\/local\/bin\/fastjet-config/' ./input/mg5_configuration.txt
-    cd /home/atreus/singularity-build && echo -e "import model loop_sm-no_b_mass\\ninstall mg5amc_py8_interface\\ngenerate p p > t t~ [QCD]\\noutput mg5_test_run" > mg5_exec_card
+{herwig_sed_singularity}    cd /home/atreus/singularity-build && echo -e "import model loop_sm-no_b_mass\\ninstall mg5amc_py8_interface\\ngenerate p p > t t~ [QCD]\\noutput mg5_test_run" > mg5_exec_card
     /usr/local/bin/mg5 mg5_exec_card && cd /
 
 """

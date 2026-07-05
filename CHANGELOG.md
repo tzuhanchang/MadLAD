@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+ - Add optional Herwig 7 / ThePEG installation for NLO (aMC@NLO) parton showering, selectable via `parton_shower: "HERWIGPP"`
  - Add `gen.block_madspin.misc` setting in configuration ([#82](https://github.com/tzuhanchang/MadLAD/pull/82))
  - Add `ssWWjj_nlo-vlvl` and `ssWWjj_lo-vlvl` processes ([#81](https://github.com/tzuhanchang/MadLAD/pull/81))
  - Add `Ztautau-vvlvvl` process ([#80](https://github.com/tzuhanchang/MadLAD/pull/80))

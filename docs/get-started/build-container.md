@@ -46,6 +46,8 @@ build:
   lhapdf:  "6.5.0"
   fastjet: "3.4.0"
   delphes: "3.5.0"
+  herwig:  "7.3.0"    # Optional: Herwig 7, for NLO (aMC@NLO) parton showering
+  thepeg:  "2.3.0"    # Optional: ThePEG version paired with `herwig` (default "2.3.0")
 ```
 
 For MadGraph5 (`mg5`) you can use:
@@ -53,6 +55,16 @@ For MadGraph5 (`mg5`) you can use:
 * **Path**   → copy a local installation instead of downloading.
 
 > **Example:** `mg5: "/opt/mg5_aMC_v2.9.18"` will copy that folder into the image.
+
+`herwig` is optional. If omitted, no Herwig software is built and only Pythia8 is available.
+If provided, MadLAD builds [ThePEG](https://thepeg.hepforge.org) and [Herwig 7](https://herwig.hepforge.org)
+from source and points MG5 at them (`hwpp_path`, `thepeg_path`, `hepmc_path` in `mg5_configuration.txt`).
+
+> **Note:** MadGraph5 only exposes a Herwig7/HerwigPP interface for **NLO (aMC@NLO)** event generation,
+> selected via `parton_shower: "HERWIGPP"` in `block_run` (see [Event Generation](event-generation.md)).
+> There is no on‑the‑fly Herwig interface for LO (MadEvent) generation — that path remains Pythia8‑only.
+> The MC@NLO–Herwig interface itself is also not officially validated by the MG5 developers (no FxFx/merging support),
+> so treat it as best‑effort.
 
 #### 2.3 `extra`
 
